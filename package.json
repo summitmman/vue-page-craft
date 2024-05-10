@@ -1,7 +1,7 @@
 {
   "name": "vue-page-craft",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "files": [
     "dist"
@@ -36,5 +36,22 @@
     "vue-tsc": "^2.0.6",
     "vue3-json-viewer": "^2.2.2",
     "vuetify": "^3.5.17"
-  }
+  },
+  "keywords": [
+    "form builder",
+    "formbuilder",
+    "form-builder",
+    "page builder",
+    "pagebuilder",
+    "page-builder",
+    "json",
+    "schema",
+    "builder",
+    "renderer",
+    "generator",
+    "generate",
+    "ui",
+    "dynamic",
+    "dynamically"
+  ]
 }
