@@ -151,8 +151,8 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 
 ## Other supported features
 
-1. v-model
-   NOTE: v-model will not work with native element like `<input />`. You need to create a wrapper vue component which exposes v-model separately.
+1. **v-model**
+   **NOTE**: v-model will not work with native element like `<input />`. You need to create a wrapper vue component which exposes v-model separately.
 
 ```
 {
@@ -169,7 +169,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 }
 ```
 
-2. v-if
+2. **v-if**
 
 ```
 {
@@ -197,7 +197,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 }
 ```
 
-3. v-for
+3. **v-for**
 
 ```
 {
@@ -217,7 +217,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 }
 ```
 
-4. Named slots
+4. **Named slots**
 
 ```
 {
