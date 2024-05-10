@@ -40,11 +40,44 @@ app.use(PageCrafter);
 3. Create page schema which complies to IPage
 ```
 import { IPage } from 'vue-page-craft';
+const page: IPage = {
+    id: 'sample-page',
+    children: [
+        {
+            type: 'h1',
+            children: [
+                'Demo page'
+            ]
+        },
+        {
+            type: 'div',
+            props: {
+                class: 'center'
+            },
+            children: [
+                'This is example of a button', // children can be string text or widget object
+                {
+                    type: 'CustomButton', // This is a custom buttom vue component
+                    props: {
+                        class: 'block mb-10',
+                        variant: 'primary'
+                    },
+                    events: {
+                        click: 'handleAppCustomClick' // This is a function name which should exist in eventMap below
+                    },
+                    children: [
+                        'Custom button to say Hi {{ singleName }}' // reactive variable which should exist in reactiveVariableMap below
+                    ]
+                }
+            ]
+        }
+    ]
+};
 ```
 4. Create widgetMap, which is a mapping of string keys to vue components. These keys are used in the page JSON schema. Components can be lazily loaded and mapped. If the components to be used are globally imported then there is no need of adding it to the widgetMap
 ```
 const widgetMap = {
-    Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ './components/Button.vue')),
+    CustomButton: defineAsyncComponent(() => import(/* webpackChunkName: "CustomButton" */ './components/CustomButton.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ './components/Name.vue'))
 };
 ```
