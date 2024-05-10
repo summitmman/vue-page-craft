@@ -14,7 +14,7 @@
     "build:lib": "vue-tsc && vite build",
     "preview": "vite preview",
     "build:app": "vue-tsc && vite build --mode app",
-    "deploy": "gh-pages -d dist"
+    "deploy:app": "gh-pages -d dist"
   },
   "dependencies": {
     "lodash.get": "^4.4.2"
