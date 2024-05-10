@@ -1,9 +1,14 @@
 # Vue Page Craft
 
-Vue Page Craft lets you create a page through JSON. You will be able to create any native or custom vue component with attributes, event bindings and nested children. This library can be used to create moderately complex pages on the go with some level of reactivity support.
+Vue Page Craft lets you create a UI page through JSON. You will be able to create any native HTML element or custom vue component and provide it's attributes, event bindings and nested children (if any). You may use any popular vue component library or your own component library with this crafter.\
+This library can be used to create moderately complex pages on the go with some basic level of reactivity support.
 
 ### Use case
-If a page in a user's UI journey needs to be customized (for each user, or service provider or any other marker) at runtime, you may store the JSON schema as per customizations in the database and let the Page Crafter render the page for you.
+A user journey is comprised of 2 pages. On the first page user is shown a bunch of service providers, of which user selects 1 and proceeds to page 2. Page 2 needs to show the marketing page of the selected service provider (which may contain banners, benefits, FAQs, even interactive forms and dynamic plans offered by the service provider) each with its own design language or widget set.\
+For such a case one approach is that you can maintain different UI templates for each service provider, and load the one which was selected. One con of this approach will be that; backend can keep integrating new service providers, but frontend will also have to create new templates and deploy it.\
+Another approach is to have a fixed layout and keep changing the images/content. But the con is that ofcourse the layout will have to be fixed or the widgets will have to be extremely customizable.\
+Or\
+You can use Vue Page Craft to power it all through JSON, store it in the database and let backend send back the required page schema based on the selected service provider. Because it is JSON you may also have a default template and tweak it at runtime.
 
 ### Demo
 https://summitmman.github.io/vue-page-craft/
@@ -44,7 +49,7 @@ const page: IPage = {
     id: 'sample-page',
     children: [
         {
-            type: 'h1',
+            type: 'h1', // Note: you may use native HTML tags here
             children: [
                 'Demo page'
             ]
@@ -121,7 +126,23 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 />
 ```
 ## Other supported features
-1. v-if
+1. v-model\
+NOTE: v-model will not work with native element like <input />. You need to create a wrapper vue component which exposes v-model separately.
+```
+{
+    type: 'Name',
+    props: {
+        type: 'text',
+        'v-model': '{{ name }}',
+        'v-model:surname': '{{ surname }}',
+        'singleName': '{{ singleName }}'
+    },
+    events: {
+        change: 'handleChange'
+    }
+}
+```
+2. v-if
 ```
 {
     type: 'v-if',
@@ -147,7 +168,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
     ]
 }
 ```
-2. v-for
+3. v-for
 ```
 {
     type: 'v-for',
@@ -165,7 +186,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
     ]
 }
 ```
-3. Named slots
+4. Named slots
 ```
 "slots": {
     "footer": [
