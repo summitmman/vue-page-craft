@@ -1,0 +1,40 @@
+{
+  "name": "vue-page-craft",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build:lib": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "build:app": "vue-tsc && vite build --mode app",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "lodash.get": "^4.4.2"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@types/lodash.get": "^4.4.9",
+    "@types/node": "^20.12.11",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "clipboard": "^2.0.11",
+    "gh-pages": "^6.1.1",
+    "naive-ui": "^2.38.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vite-plugin-dts": "^3.9.0",
+    "vue-router": "4",
+    "vue-tsc": "^2.0.6",
+    "vue3-json-viewer": "^2.2.2",
+    "vuetify": "^3.5.17"
+  }
+}

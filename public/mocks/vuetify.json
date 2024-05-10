@@ -1,0 +1,264 @@
+{
+    "id": "sample-page",
+    "initialData": {
+        "name": "Sumit",
+        "benefits": [
+            {
+                "title": "Get Rewards",
+                "subtitle": "Get rewards for every commit that you make",
+                "icon": "/vue-page-craft/img/diamond.png"
+            },
+            {
+                "title": "Get Knowledge",
+                "subtitle": "Professionals will peer review your code and help you learn",
+                "icon": "/vue-page-craft/img/deep-learning.png"
+            },
+            {
+                "title": "Build AI",
+                "subtitle": "Finally build AI bots which will help rule the world",
+                "icon": "/vue-page-craft/img/robotics.png"
+            }
+        ],
+        "cities": [
+            "California",
+            "Colorado",
+            "Florida",
+            "Georgia",
+            "Texas",
+            "Wyoming"
+        ],
+        "city": null
+    },
+    "children": [
+        {
+            "type": "v-container",
+            "children": [
+                {
+                    "type": "v-row",
+                    "children": [
+                        {
+                            "type": "v-col",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "children": [
+                                        "Vuetify Demo"
+                                    ]
+                                },
+                                {
+                                    "type": "p",
+                                    "children": [
+                                        "This page demonstrates the use of Page crafter. Page crafter can be used not only to create forms dynamically but also entire pages with mid-level complexity."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "v-row",
+                    "props": {
+                        "justify": "start"
+                    },
+                    "children": [
+                        {
+                            "type": "v-col",
+                            "children": [
+                                {
+                                    "type": "div",
+                                    "props": {
+                                        "class": "banner"
+                                    },
+                                    "children": [
+                                        {
+                                            "type": "img",
+                                            "props": {
+                                                "src": "/vue-page-craft/img/path.jpg",
+                                                "class": "banner-img"
+                                            }
+                                        },
+                                        {
+                                            "type": "h1",
+                                            "props": {
+                                                "class": "banner-text-container"
+                                            },
+                                            "children": [
+                                                {
+                                                    "type": "div",
+                                                    "props": {
+                                                        "class": "frosted-glass"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "div",
+                                                    "props": {
+                                                        "class": "banner-text"
+                                                    },
+                                                    "children": [
+                                                        "PAGE CRAFTER DEMO - Vuetify"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "v-row",
+                    "props": {
+                        "justify": "start"
+                    },
+                    "children": [
+                        {
+                            "type": "v-col",
+                            "children": [
+                                {
+                                    "type": "h2",
+                                    "children": [
+                                        "Benefits"
+                                    ]
+                                },
+                                {
+                                    "type": "v-list",
+                                    "props": {
+                                        "lines": "two"
+                                    },
+                                    "children": [
+                                        {
+                                            "type": "v-for",
+                                            "props": {
+                                                "id": "myBenefits",
+                                                "loopOn": "{{ benefits }}"
+                                            },
+                                            "children": [
+                                                {
+                                                    "type": "v-list-item",
+                                                    "props": {
+                                                        "title": "{{ myBenefitsItem.title }}",
+                                                        "subtitle": "{{ myBenefitsItem.subtitle }}",
+                                                        "prepend-avatar": "{{ myBenefitsItem.icon }}"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "v-row",
+                    "props": {
+                        "justify": "start"
+                    },
+                    "children": [
+                        {
+                            "type": "v-col",
+                            "children": [
+                                {
+                                    "type": "v-card",
+                                    "props": {
+                                        "variant": "elevated"
+                                    },
+                                    "children": [
+                                        {
+                                            "type": "v-card-item",
+                                            "children": [
+                                                {
+                                                    "type": "v-card-title",
+                                                    "children": [
+                                                        "Enter your name"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "v-card-subtitle",
+                                                    "children": [
+                                                        "Just a simple form demo"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "v-card-text",
+                                            "children": [
+                                                {
+                                                    "type": "v-text-field",
+                                                    "props": {
+                                                        "v-model": "{{ name }}",
+                                                        "hint": "You have entered : \"{{ name }}\"; Thats what you entered",
+                                                        "persistent-hint": true,
+                                                        "placeholder": "Please enter your name",
+                                                        "label": "Your name"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "v-select",
+                                                    "props": {
+                                                        "label": "Select City",
+                                                        "items": "{{ cities }}",
+                                                        "v-model": "{{ city }}",
+                                                        "hint": "{{ city }}",
+                                                        "persistent-hint": true,
+                                                        "class": "mt-2"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "v-radio-group",
+                                                    "props": {
+                                                        "v-model": "{{ city }}",
+                                                        "hint": "{{ city }}",
+                                                        "persistent-hint": true
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "type": "v-for",
+                                                            "props": {
+                                                                "id": "cities",
+                                                                "loopOn": "{{ cities }}"
+                                                            },
+                                                            "children": [
+                                                                {
+                                                                    "type": "v-radio",
+                                                                    "props": {
+                                                                        "label": "{{ citiesItem }}",
+                                                                        "value": "{{ citiesItem }}"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "v-card-actions",
+                                                    "children": [
+                                                        {
+                                                            "type": "v-btn",
+                                                            "props": {
+                                                                "variant": "tonal",
+                                                                "color": "primary"
+                                                            },
+                                                            "events": {
+                                                                "click": "sayHi"
+                                                            },
+                                                            "children": [
+                                                                "Click to say Hi"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
