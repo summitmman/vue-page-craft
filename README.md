@@ -253,8 +253,14 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 },
 ```
 
-### Findings
+## Findings
 
 Ref when passed through an object and not directly returned to the template does not get opened by vue
 Hence when vue encounters a variable which is not opened it simply prints the __value which is the value with double quotes
 To resolve this we had to create Renderer components which simply return the ref variables inside the object to the template or open it ourselves using the reactive construct
+
+## Next
+
+* [ ] Types support in events; arguments as well as reactive variable types
+* [ ] Ability to pass expressions in string as well as in props
+* [ ] Make a better demo
