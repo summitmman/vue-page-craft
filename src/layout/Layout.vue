@@ -67,12 +67,24 @@ main#main-body {
   height: calc(100% - 20px);
 }
 #state {
-  background-color: rgb(255, 219, 92, 0.6);
+  background-color: rgba(255, 219, 92, 0.6);
+}
+#state b {
+  color: rgb(255, 219, 92);
+  filter: brightness(0.6);
 }
 #events {
-  background-color: rgb(255, 175, 97, 0.6);
+  background-color: rgba(255, 175, 97, 0.6);
+}
+#events b {
+  color: rgb(255, 175, 97);
+  filter: brightness(0.6);
 }
 #component-map {
-  background-color: rgb(255, 112, 171, 0.6);
+  background-color: rgba(255, 112, 171, 0.6);
+}
+#component-map b {
+  color: rgb(255, 112, 171);
+  filter: brightness(0.6);
 }
 </style>
