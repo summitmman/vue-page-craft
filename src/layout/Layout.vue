@@ -36,6 +36,13 @@ main#main-body {
   display: flex;
   height: calc(100vh - 54px);
 }
+@media(max-width: 768px) {
+    main#main-body {
+        display: flex;
+        height: auto;
+        flex-direction: column;
+    }
+}
 #demo {
   background-color: #FbF7F5;
   flex: 1;
