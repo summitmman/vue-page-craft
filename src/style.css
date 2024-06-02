@@ -44,6 +44,9 @@ body {
 .flex-no-grow {
   flex: 0 0 auto;
 }
+.p-15 {
+  padding: 15px;
+}
 
 .banner {
   position: relative;
@@ -98,4 +101,22 @@ body {
   margin-left: 20px;
   padding-left: 20px;
   border-left: 1px solid #acacac;
+}
+
+.menu-link {
+text-decoration: none;
+color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;  /* for vertical scrollbars */
+  height: 6px; /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }

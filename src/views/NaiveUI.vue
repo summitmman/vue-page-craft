@@ -1,6 +1,6 @@
 <template>
-  <div class="flex">
-    <div class="w-50 flex-no-grow">
+  <Layout>
+    <template v-slot:demo>
       <PageCrafter
         v-if="page"
         :page="page"
@@ -8,17 +8,16 @@
         :eventMap="eventMap"
         :reactiveVariableMap="reactiveVariableMap"
       />
-    </div>
-    <div class="json-section">
-      <h1>JSON</h1>
+    </template>
+    <template v-slot:schema>
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="2"
+        expandDepth="3"
         theme="jv-light"
       />
-    </div>
-  </div>
+    </template>
+  </Layout>
 </template>
 
 <script setup lang="ts">

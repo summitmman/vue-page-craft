@@ -1,6 +1,6 @@
 <template>
-  <div class="flex">
-    <div class="w-50 flex-no-grow">
+  <Layout>
+    <template v-slot:demo>
       <PageCrafter
         v-if="page"
         :page="page ?? {id: '', children: []}"
@@ -14,17 +14,52 @@
         <input type="text" class="native-input block" v-model="singleName" />
         Your Single Name/Pet Name is "{{ singleName }}"
       </div>
-    </div>
-    <div class="json-section">
-      <h1>JSON</h1>
+    </template>
+    <template v-slot:schema>
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="2"
+        expandDepth="10"
         theme="jv-light"
       />
-    </div>
-  </div>
+    </template>
+    <template v-slot:state>
+        const singleName = ref('{{ singleName }}');<br />
+        const <b>reactiveVariableMap</b> = {<br />
+          &emsp;singleName,<br />
+          &emsp;singleNameLength: computed(() => singleName.value.length),<br />
+          &emsp;cities: ref([<br />
+            &emsp;&emsp;{<br />
+              &emsp;&emsp;&emsp;name: 'Mumbai',<br />
+            &emsp;&emsp;},<br />
+            &emsp;&emsp;{<br />
+              &emsp;&emsp;&emsp;name: 'Bengaluru'<br />
+            &emsp;&emsp;}<br />
+          &emsp;])<br />
+        };
+    </template>
+    <template v-slot:events>
+      <p>
+        const <b>eventMap</b>: EventMap = (reactiveVariables: GenericObject): GenericObject => ({<br />
+          &emsp;handleAppCustomClick: () => {<br />
+            &emsp;&emsp;alert(`Hello ${ reactiveVariables.name?.value }`);<br />
+          &emsp;},<br />
+          &emsp;handleChange: (val: any) => {<br />
+            &emsp;&emsp;console.log('SUMIT LOG', val, reactiveVariables.surname?.value);<br />
+          &emsp;},<br />
+          &emsp;singleNameLengthFn: () => {<br />
+            &emsp;&emsp;return reactiveVariables.singleNameLength?.value;<br />
+          &emsp;}<br />
+        });
+      </p>
+    </template>
+    <template v-slot:component-map>
+      const <b>widgetMap</b> = {<br />
+        &emsp;Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),<br />
+        &emsp;Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))<br />
+      };
+    </template>
+  </Layout>
 </template>
   
 <script setup lang="ts">

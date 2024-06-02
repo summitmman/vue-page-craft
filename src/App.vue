@@ -1,89 +1,63 @@
 <template>
-  <div class="container">
+  <header>
     <nav>
       <ul>
-        <li><RouterLink :to="{name: 'native'}">Native</RouterLink></li>
-        <li><RouterLink :to="{name: 'vuetify'}">Vuetify</RouterLink></li>
-        <li><RouterLink :to="{name: 'naiveui'}">Naive UI</RouterLink></li>
+        <li :ref="(el) => menuItems['native'] = el"><RouterLink class="menu-link" :to="{name: 'native'}">Native</RouterLink></li>
+        <li :ref="(el) => menuItems['vuetify'] = el"><RouterLink class="menu-link" :to="{name: 'vuetify'}">Vuetify</RouterLink></li>
+        <li :ref="(el) => menuItems['naiveui'] = el"><RouterLink class="menu-link" :to="{name: 'naiveui'}">Naive UI</RouterLink></li>
       </ul>
+      <div class="underline" :style="{ transform: `translateX(${underlineLeftOffset}px)` }"></div>
     </nav>
-    <div class="body">
-      <RouterView />
-    </div>
-  </div>
+  </header>
+  <RouterView />
 </template>
 
 <script setup lang="ts">
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterView, RouterLink, useRoute } from 'vue-router';
+import { ref, computed } from 'vue';
+
+const route = useRoute();
+const menuItems = ref<{[key: string]: any}>({});
+const underlineLeftOffset = computed(() => {
+  const menuEl = menuItems.value[String(route.name)];
+  if (!menuEl) {
+    return 0;
+  }
+  const offsetLeft = menuEl.offsetLeft ?? 0;
+  const width = menuEl.offsetWidth ?? 0;
+  const halfWidth = width ? (width / 2) - 7 : 0;
+  return offsetLeft + halfWidth;
+});
+
 </script>
 
 <style scoped>
-
-.container {
-  margin: 0;
-  padding: 0;
+header {
+    width: 100%;
+    padding: 15px 0;
+    background-color: #26355D;
+    color: #FFDB00;
 }
-.body {
-  /* margin-top: 50px; */
-  margin: 50px 20px 0px;
-  /* width: 50%; */
-}
-@media only screen and (max-width: 1200px) {
-  .body {
-    width: 80%;
-  }
-}
-@media only screen and (max-width: 1500px) {
-  .body {
-    width: 60%;
-  }
-}
-
 nav {
-  position: fixed;
-  width: 100%;
-  height: 50px;
-  top: 0px;
-  padding-left: 20px;
-  background: #55d6aa;
-  z-index: 10;
+    position: relative;
 }
-nav ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+nav > ul > li {
+    display: inline-block;
+    cursor: pointer;
 }
-nav li {
-  display: inline-block;
-  margin-left: 30px;
-  padding-top: 15px;
-
-  position: relative;
+nav > ul {
+    margin-left: 15px;
 }
-nav a {
-  color: #444;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: bold;
+nav > ul > li:not(:first-child) {
+    margin-left: 15px;
 }
-nav a:hover, nav a.router-link-active {
-  color: #000;
+.underline {
+    content: '';
+    width: 14px;
+    border: 2px solid #FF8F00;
+    display: block;
+    border-radius: 4px;
+    position: absolute;
+    transition: transform 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-nav a::before {
-  content: '';
-  display: block;
-  height: 5px;
-  background-color: #444;
-
-  position: absolute;
-  top: 0;
-  width: 0%;
-
-  transition: all ease-in-out 250ms;
-}
-nav a:hover::before, nav a.router-link-active::before {
-  width: 100%;
-}
-
 </style>

@@ -2,6 +2,7 @@
 import { createApp } from 'vue';
 // Component
 import App from './App.vue';
+import Layout from './layout/Layout.vue';
 // Router
 import { router } from './router';
 // Vuetify
@@ -31,6 +32,8 @@ const vuetify = createVuetify({
 })
 app.use(vuetify);
 app.use(JsonViewer);
+
+app.component('Layout', Layout);
 
 // Mount
 app.mount('#app');
