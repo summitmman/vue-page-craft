@@ -120,3 +120,24 @@ color: inherit;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
 }
+
+
+.object-content {
+  margin-left: 10px;
+}
+.object-property-padding {
+  margin-left: 14px;
+}
+.object-close-padding {
+  margin-left: 19px;
+}
+
+.state-txt {
+  color: rgb(255, 219, 92);
+}
+.event-txt {
+  background-color: rgb(255, 175, 97);
+}
+.component-map-txt {
+  background-color: rgb(255, 112, 171);
+}

@@ -16,12 +16,19 @@
       </div>
     </template>
     <template v-slot:schema>
-      <JsonViewer
+      <ObjectViewer
+        v-if="jsonData"
+        :object="jsonData"
+        :stateKeys="Object.keys(reactiveVariableMap)"
+        :eventKeys="Object.keys(eventMap)"
+        :componentKeys="Object.keys(widgetMap)"
+      />
+      <!-- <JsonViewer
         v-if="jsonData"
         :value="jsonData"
         expandDepth="10"
         theme="jv-light"
-      />
+      /> -->
     </template>
     <template v-slot:state>
         const singleName = ref('{{ singleName }}');<br />
@@ -65,6 +72,7 @@
 <script setup lang="ts">
   import { defineAsyncComponent, ref, Ref, ComputedRef, computed } from 'vue';
   import PageCrafter from '../pageCrafter/PageCrafter.vue';
+  import ObjectViewer from '../components/ObjectViewer.vue';
   import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
   
   const jsonData = ref(null);
