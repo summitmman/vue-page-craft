@@ -40,6 +40,9 @@ main#main-body {
   background-color: #FbF7F5;
   flex: 1;
   overflow: auto;
+  background-image: url('/vue-page-craft/img/background-pattern.jpg');
+  background-repeat: repeat;
+  background-blend-mode: lighten;
 }
 #code {
   flex: 1
