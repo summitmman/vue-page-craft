@@ -1,6 +1,6 @@
 <template>
-  <div class="flex">
-    <div class="w-50 flex-no-grow">
+  <Layout>
+    <template v-slot:demo>
       <PageCrafter
         v-if="page"
         :page="page"
@@ -8,17 +8,67 @@
         :eventMap="eventMap"
         :reactiveVariableMap="reactiveVariableMap"
       />
-    </div>
-    <div class="json-section">
-      <h1>JSON</h1>
+    </template>
+    <template v-slot:schema>
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="2"
+        expandDepth="3"
         theme="jv-light"
       />
-    </div>
-  </div>
+    </template>
+    <template v-slot:state>
+      <pre>
+        <code>
+const name = ref('Sumit');
+const <b>reactiveVariableMap</b> = {
+  name,
+  nameHint: computed(() => `You have entered: ${name.value}`),
+};
+        </code>
+      </pre>
+    </template>
+    <template v-slot:events>
+      <pre>
+        <code>
+const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+  sayHi: () => {
+    alert(`Hi ${reactiveVariables.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
+    reactiveVariables.benefits?.value.push({
+      title: 'New Benefit',
+      subtitle: 'Get rewards for new benefit',
+      icon: `${import.meta.env.BASE_URL}/img/diamond.png`
+    });
+  }
+});
+        </code>
+      </pre>
+    </template>
+    <template v-slot:component-map>
+      <pre>
+        <code>
+const <b>widgetMap</b> = {
+  'v-container': components.VContainer,
+  'v-row': components.VRow,
+  'v-col': components.VCol,
+  'v-card': components.VCard,
+  'v-card-item': components.VCardItem,
+  'v-card-title': components.VCardTitle,
+  'v-card-subtitle': components.VCardSubtitle,
+  'v-card-text': components.VCardText,
+  'v-text-field': components.VTextField,
+  'v-select': components.VSelect,
+  'v-radio-group': components.VRadioGroup,
+  'v-radio': components.VRadio,
+  'v-btn': components.VBtn,
+  'v-card-actions': components.VCardActions,
+  'v-list': components.VList,
+  'v-list-item': components.VListItem
+};
+        </code>
+      </pre>
+    </template>
+  </Layout>
 </template>
 
 <script setup lang="ts">

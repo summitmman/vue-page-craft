@@ -6,6 +6,9 @@
 body {
   margin: 0px;
 }
+pre {
+  max-width: 50vw;
+}
 .native-btn {
   background-color: aliceblue;
   border-style: solid;
@@ -44,6 +47,9 @@ body {
 .flex-no-grow {
   flex: 0 0 auto;
 }
+.p-15 {
+  padding: 15px;
+}
 
 .banner {
   position: relative;
@@ -58,10 +64,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: calc(2vw);
+  font-size: 2vw;
   color: white;
   display: inline-block;
   padding: 10px;
+}
+@media(max-width: 768px) {
+  .banner-text-container {
+    font-size: 5vw;
+  }
 }
 .frosted-glass {
   position: absolute;
@@ -98,4 +109,43 @@ body {
   margin-left: 20px;
   padding-left: 20px;
   border-left: 1px solid #acacac;
+}
+
+.menu-link {
+text-decoration: none;
+color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;  /* for vertical scrollbars */
+  height: 6px; /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+
+.object-content {
+  margin-left: 10px;
+}
+.object-property-padding {
+  margin-left: 14px;
+}
+.object-close-padding {
+  margin-left: 19px;
+}
+
+.state-txt {
+  color: rgb(255, 219, 92);
+}
+.event-txt {
+  background-color: rgb(255, 175, 97);
+}
+.component-map-txt {
+  background-color: rgb(255, 112, 171);
 }
