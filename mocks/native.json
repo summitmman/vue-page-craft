@@ -23,111 +23,116 @@
     },
     "children": [
         {
-            "type": "h1",
-            "children": [
-                "Native Demo"
-            ]
-        },
-        {
-            "type": "p",
-            "props": {
-                "class": "mb-10"
-            },
-            "children": [
-                "This page demonstrates the use of Page crafter. Page crafter can be used not only to create forms dynamically but also entire pages with mid-level complexity."
-            ]
-        },
-        {
             "type": "div",
-            "props": {
-                "class": "banner mb-10"
-            },
             "children": [
-                {
-                    "type": "img",
-                    "props": {
-                        "src": "/vue-page-craft/img/path.jpg",
-                        "class": "banner-img"
-                    }
-                },
                 {
                     "type": "h1",
+                    "children": [
+                        "Native Demo"
+                    ]
+                },
+                {
+                    "type": "p",
                     "props": {
-                        "class": "banner-text-container"
+                        "class": "mb-10"
+                    },
+                    "children": [
+                        "This page demonstrates the use of Page crafter. Page crafter can be used not only to create forms dynamically but also entire pages with mid-level complexity."
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "banner mb-10"
                     },
                     "children": [
                         {
-                            "type": "div",
+                            "type": "img",
                             "props": {
-                                "class": "frosted-glass"
+                                "src": "/vue-page-craft/img/path.jpg",
+                                "class": "banner-img"
                             }
                         },
                         {
-                            "type": "div",
+                            "type": "h1",
                             "props": {
-                                "class": "banner-text"
+                                "class": "banner-text-container"
                             },
-                            "children": [
-                                "PAGE CRAFTER DEMO - Native"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "h2",
-            "children": [
-                "Benefits"
-            ]
-        },
-        {
-            "type": "ul",
-            "props": {
-                "class": "native-ul"
-            },
-            "children": [
-                {
-                    "type": "v-for",
-                    "props": {
-                        "id": "myBenefits",
-                        "loopOn": "{{ benefits }}"
-                    },
-                    "children": [
-                        {
-                            "type": "li",
                             "children": [
                                 {
                                     "type": "div",
                                     "props": {
-                                        "class": "flex"
+                                        "class": "frosted-glass"
+                                    }
+                                },
+                                {
+                                    "type": "div",
+                                    "props": {
+                                        "class": "banner-text"
                                     },
+                                    "children": [
+                                        "PAGE CRAFTER DEMO - Native"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "h2",
+                    "children": [
+                        "Benefits"
+                    ]
+                },
+                {
+                    "type": "ul",
+                    "props": {
+                        "class": "native-ul"
+                    },
+                    "children": [
+                        {
+                            "type": "v-for",
+                            "props": {
+                                "id": "myBenefits",
+                                "loopOn": "{{ benefits }}"
+                            },
+                            "children": [
+                                {
+                                    "type": "li",
                                     "children": [
                                         {
                                             "type": "div",
+                                            "props": {
+                                                "class": "flex"
+                                            },
                                             "children": [
                                                 {
-                                                    "type": "img",
-                                                    "props": {
-                                                        "src": "{{ myBenefitsItem.icon }}",
-                                                        "class": "native-avatar"
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "type": "div",
-                                            "children": [
-                                                {
-                                                    "type": "h4",
+                                                    "type": "div",
                                                     "children": [
-                                                        "{{ myBenefitsItem.title }}"
+                                                        {
+                                                            "type": "img",
+                                                            "props": {
+                                                                "src": "{{ myBenefitsItem.icon }}",
+                                                                "class": "native-avatar"
+                                                            }
+                                                        }
                                                     ]
                                                 },
                                                 {
                                                     "type": "div",
                                                     "children": [
-                                                        "{{ myBenefitsItem.subtitle }}"
+                                                        {
+                                                            "type": "h4",
+                                                            "children": [
+                                                                "{{ myBenefitsItem.title }}"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "div",
+                                                            "children": [
+                                                                "{{ myBenefitsItem.subtitle }}"
+                                                            ]
+                                                        }
                                                     ]
                                                 }
                                             ]
@@ -137,149 +142,149 @@
                             ]
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "type": "h2",
-            "children": [
-                "Enter your name"
-            ]
-        },
-        {
-            "type": "p",
-            "props": {
-                "class": "mb-10"
-            },
-            "children": [
-                "just a simple form demo"
-            ]
-        },
-        {
-            "type": "p",
-            "children": [
-                {
-                    "type": "Name",
-                    "props": {
-                        "type": "text",
-                        "v-model": "{{ name }}",
-                        "v-model:surname": "{{ surname }}",
-                        "singleName": "{{ singleName }}"
-                    },
-                    "events": {
-                        "change": "handleChange"
-                    },
-                    "slots": {
-                        "footer": [
-                            "This footer is a ",
-                            {
-                                "type": "b",
-                                "children": [
-                                    "named slot example "
-                                ]
-                            },
-                            "showing last name '{{ surname }}' and ",
-                            {
-                                "type": "b",
-                                "children": [
-                                    "slotProps "
-                                ]
-                            },
-                            "'{{ footerSlotProps.message }}'"
-                        ]
-                    }
                 },
-                "From outside the custom textbox component we get the name \"{{ name }}\" surname \"{{ surname }}\"",
-                {
-                    "type": "br"
-                },
-                "Pet name \"{{ singleName }}\" is just printed here",
-                {
-                    "type": "Button",
-                    "props": {
-                        "class": "block mb-10"
-                    },
-                    "events": {
-                        "click": "handleAppCustomClick"
-                    },
-                    "children": [
-                        "Custom button to say Hi"
-                    ]
-                },
-                {
-                    "type": "button",
-                    "props": {
-                        "class": "block native-btn mb-10"
-                    },
-                    "events": {
-                        "click": "handleAppCustomClick"
-                    },
-                    "children": [
-                        "Native button to say Hi"
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "div",
-            "props": {
-                "class": "boundary"
-            },
-            "children": [
                 {
                     "type": "h2",
                     "children": [
-                        "v-if example"
+                        "Enter your name"
                     ]
                 },
                 {
-                    "type": "v-if",
+                    "type": "p",
                     "props": {
-                        "condition": "{{ singleNameLength }}",
-                        "vElseChildren": [
-                            {
-                                "type": "v-if",
-                                "props": {
-                                    "condition": "{{ name }}",
-                                    "vElseChildren": [
-                                        "This text shows when both Single Name/Pet Name and First Name are invalid"
-                                    ]
-                                },
-                                "children": [
-                                    "This text only shows when Single Name/Pet Name is invalid but First Name : \"{{ name }}\" is valid"
+                        "class": "mb-10"
+                    },
+                    "children": [
+                        "just a simple form demo"
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        {
+                            "type": "Name",
+                            "props": {
+                                "type": "text",
+                                "v-model": "{{ name }}",
+                                "v-model:surname": "{{ surname }}",
+                                "singleName": "{{ singleName }}"
+                            },
+                            "events": {
+                                "change": "handleChange"
+                            },
+                            "slots": {
+                                "footer": [
+                                    "This footer is a ",
+                                    {
+                                        "type": "b",
+                                        "children": [
+                                            "named slot example "
+                                        ]
+                                    },
+                                    "showing last name '{{ surname }}' and ",
+                                    {
+                                        "type": "b",
+                                        "children": [
+                                            "slotProps "
+                                        ]
+                                    },
+                                    "'{{ footerSlotProps.message }}'"
                                 ]
                             }
-                        ]
-                    },
-                    "children": [
-                        "This text only shows when Single Name/Pet Name length : \"{{ singleNameLength }}\" is a valid"
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "div",
-            "props": {
-                "class": "boundary"
-            },
-            "children": [
-                {
-                    "type": "h2",
-                    "children": [
-                        "v-for example"
+                        },
+                        "From outside the custom textbox component we get the name \"{{ name }}\" surname \"{{ surname }}\"",
+                        {
+                            "type": "br"
+                        },
+                        "Pet name \"{{ singleName }}\" is just printed here",
+                        {
+                            "type": "Button",
+                            "props": {
+                                "class": "block mb-10"
+                            },
+                            "events": {
+                                "click": "handleAppCustomClick"
+                            },
+                            "children": [
+                                "Custom button to say Hi"
+                            ]
+                        },
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "block native-btn mb-10"
+                            },
+                            "events": {
+                                "click": "handleAppCustomClick"
+                            },
+                            "children": [
+                                "Native button to say Hi"
+                            ]
+                        }
                     ]
                 },
                 {
-                    "type": "v-for",
+                    "type": "div",
                     "props": {
-                        "id": "looping",
-                        "loopOn": "{{ cities }}"
+                        "class": "boundary"
                     },
                     "children": [
                         {
-                            "type": "div",
+                            "type": "h2",
                             "children": [
-                                "{{ name }} has lived in {{loopingIndex}}:{{ loopingItem.name }}"
+                                "v-if example"
+                            ]
+                        },
+                        {
+                            "type": "v-if",
+                            "props": {
+                                "condition": "{{ singleNameLength }}",
+                                "vElseChildren": [
+                                    {
+                                        "type": "v-if",
+                                        "props": {
+                                            "condition": "{{ name }}",
+                                            "vElseChildren": [
+                                                "This text shows when both Single Name/Pet Name and First Name are invalid"
+                                            ]
+                                        },
+                                        "children": [
+                                            "This text only shows when Single Name/Pet Name is invalid but First Name : \"{{ name }}\" is valid"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "children": [
+                                "This text only shows when Single Name/Pet Name length : \"{{ singleNameLength }}\" is a valid"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "boundary"
+                    },
+                    "children": [
+                        {
+                            "type": "h2",
+                            "children": [
+                                "v-for example"
+                            ]
+                        },
+                        {
+                            "type": "v-for",
+                            "props": {
+                                "id": "looping",
+                                "loopOn": "{{ cities }}"
+                            },
+                            "children": [
+                                {
+                                    "type": "div",
+                                    "children": [
+                                        "{{ name }} has lived in {{loopingIndex}}:{{ loopingItem.name }}"
+                                    ]
+                                }
                             ]
                         }
                     ]
