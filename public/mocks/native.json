@@ -24,9 +24,6 @@
     "children": [
         {
             "type": "div",
-            "props": {
-                "class": "p-15"
-            },
             "children": [
                 {
                     "type": "h1",

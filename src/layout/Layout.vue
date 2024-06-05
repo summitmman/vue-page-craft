@@ -36,13 +36,6 @@ main#main-body {
   display: flex;
   height: calc(100vh - 54px);
 }
-@media(max-width: 768px) {
-    main#main-body {
-        display: flex;
-        height: auto;
-        flex-direction: column;
-    }
-}
 #demo {
   background-color: #FbF7F5;
   flex: 1;
@@ -61,6 +54,18 @@ main#main-body {
   height: 20%;
   padding: 15px 0 15px 15px;
   overflow: hidden;
+}
+@media(max-width: 768px) {
+    main#main-body {
+        display: block;
+        height: auto;
+    }
+    #demo {
+      height: calc(50vh - 27px);
+    }
+    #schema {
+      height: 35vh;
+    }
 }
 .content {
   overflow: auto;

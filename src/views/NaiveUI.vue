@@ -17,6 +17,51 @@
         theme="jv-light"
       />
     </template>
+    <template v-slot:state>
+      <pre>
+        <code>
+const name = ref('Sumit');
+const <b>reactiveVariableMap</b> = {
+  name,
+  nameHint: computed(() => `You have entered: ${name.value}`),
+};
+        </code>
+      </pre>
+    </template>
+    <template v-slot:events>
+      <pre>
+        <code>
+const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+  sayHi: () => {
+    alert(`Hi ${reactiveVariables.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
+    reactiveVariables.benefits?.value.push({
+      title: 'New Benefit',
+      subtitle: 'Get rewards for new benefit',
+      icon: `${import.meta.env.BASE_URL}/img/diamond.png`
+    });
+  }
+});
+        </code>
+      </pre>
+    </template>
+    <template v-slot:component-map>
+      <pre>
+        <code>
+const <b>widgetMap</b> = {
+  NButton,
+  NCard,
+  NCollapse,
+  NCollapseItem,
+  NAvatar,
+  NInput,
+  NSelect,
+  NRadio,
+  NRadioGroup,
+  NSpace
+};
+        </code>
+      </pre>
+    </template>
   </Layout>
 </template>
 

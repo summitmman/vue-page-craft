@@ -1,70 +1,82 @@
 <template>
   <Layout>
     <template v-slot:demo>
-      <PageCrafter
-        v-if="page"
-        :page="page ?? {id: '', children: []}"
-        :widgetMap="widgetMap"
-        :eventMap="eventMap"
-        :reactiveVariableMap="reactiveVariableMap"
-      />
-      <div class="boundary">
-        <h2>This section is outside page crafter</h2>
-        <p>We will try to enter/change the Single Name/Pet Name</p>
-        <input type="text" class="native-input block" v-model="singleName" />
-        Your Single Name/Pet Name is "{{ singleName }}"
+      <div class="p-15">
+        <PageCrafter
+          v-if="page"
+          :page="page ?? {id: '', children: []}"
+          :widgetMap="widgetMap"
+          :eventMap="eventMap"
+          :reactiveVariableMap="reactiveVariableMap"
+        />
+        <div class="boundary">
+          <h2>This section is outside page crafter</h2>
+          <p>We will try to enter/change the Single Name/Pet Name</p>
+          <input type="text" class="native-input block" v-model="singleName" />
+          Your Single Name/Pet Name is "{{ singleName }}"
+        </div>
       </div>
     </template>
     <template v-slot:schema>
-      <ObjectViewer
+      <!-- <ObjectViewer
         v-if="jsonData"
         :object="jsonData"
         :stateKeys="Object.keys(reactiveVariableMap)"
         :eventKeys="Object.keys(eventMap)"
         :componentKeys="Object.keys(widgetMap)"
-      />
-      <!-- <JsonViewer
+      /> -->
+      <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="10"
+        expandDepth="3"
         theme="jv-light"
-      /> -->
+      />
     </template>
     <template v-slot:state>
-        const singleName = ref('{{ singleName }}');<br />
-        const <b>reactiveVariableMap</b> = {<br />
-          &emsp;singleName,<br />
-          &emsp;singleNameLength: computed(() => singleName.value.length),<br />
-          &emsp;cities: ref([<br />
-            &emsp;&emsp;{<br />
-              &emsp;&emsp;&emsp;name: 'Mumbai',<br />
-            &emsp;&emsp;},<br />
-            &emsp;&emsp;{<br />
-              &emsp;&emsp;&emsp;name: 'Bengaluru'<br />
-            &emsp;&emsp;}<br />
-          &emsp;])<br />
-        };
+      <pre>
+        <code>
+const singleName = ref('Beta');
+const <b>reactiveVariableMap</b> = {
+  singleName,
+  singleNameLength: computed(() => singleName.value.length),
+  cities: ref([
+    {
+      name: 'Mumbai',
+    },
+    {
+      name: 'Bengaluru'
+    }
+  ])
+};
+        </code>
+      </pre>
     </template>
     <template v-slot:events>
-      <p>
-        const <b>eventMap</b>: EventMap = (reactiveVariables: GenericObject): GenericObject => ({<br />
-          &emsp;handleAppCustomClick: () => {<br />
-            &emsp;&emsp;alert(`Hello ${ reactiveVariables.name?.value }`);<br />
-          &emsp;},<br />
-          &emsp;handleChange: (val: any) => {<br />
-            &emsp;&emsp;console.log('SUMIT LOG', val, reactiveVariables.surname?.value);<br />
-          &emsp;},<br />
-          &emsp;singleNameLengthFn: () => {<br />
-            &emsp;&emsp;return reactiveVariables.singleNameLength?.value;<br />
-          &emsp;}<br />
-        });
-      </p>
+      <pre>
+        <code>
+const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+  handleAppCustomClick: () => {
+    alert(`Hello ${ reactiveVariables.name?.value }`);
+  },
+  handleChange: (val: any) => {
+    console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+  },
+  singleNameLengthFn: () => {
+    return reactiveVariables.singleNameLength?.value;
+  }
+});
+        </code>
+      </pre>
     </template>
     <template v-slot:component-map>
-      const <b>widgetMap</b> = {<br />
-        &emsp;Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),<br />
-        &emsp;Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))<br />
-      };
+      <pre>
+        <code>
+const <b>widgetMap</b> = {
+  Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
+  Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
+};
+        </code>
+      </pre>
     </template>
   </Layout>
 </template>

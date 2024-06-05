@@ -6,6 +6,9 @@
 body {
   margin: 0px;
 }
+pre {
+  max-width: 50vw;
+}
 .native-btn {
   background-color: aliceblue;
   border-style: solid;
@@ -61,10 +64,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: calc(2vw);
+  font-size: 2vw;
   color: white;
   display: inline-block;
   padding: 10px;
+}
+@media(max-width: 768px) {
+  .banner-text-container {
+    font-size: 5vw;
+  }
 }
 .frosted-glass {
   position: absolute;
