@@ -50,11 +50,13 @@ main#main-body {
 #schema {
   background-color: rgb(195, 255, 147, 0.6);
   height: 40%;
+  min-height: 250px;
   padding: 15px 0 15px 15px;
   overflow: hidden;
 }
 #state, #events, #component-map {
   height: 20%;
+  min-height: 150px;
   padding: 15px 0 15px 15px;
   overflow: hidden;
 }
