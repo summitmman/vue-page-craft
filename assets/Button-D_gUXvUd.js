@@ -1,0 +1,1 @@
+import{d as n,o as s,aU as a,aR as l,k as r}from"./index-BGrK4jw0.js";const i=n({__name:"Button",emits:["click"],setup(_,{emit:e}){const o=e,c=t=>{o("click",t)};return(t,d)=>(s(),a("button",{class:"btn",onClick:c},[l(t.$slots,"default",{},void 0,!0)]))}}),p=r(i,[["__scopeId","data-v-e8ee8c28"]]);export{p as default};
