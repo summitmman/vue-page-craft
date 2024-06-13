@@ -54,7 +54,8 @@ const <b>reactiveVariableMap</b> = {
     <template v-slot:events>
       <pre>
         <code>
-const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+type reactiveVariablesType = typeof reactiveVariableMap & GenericObject &lt; Ref | ComputedRef &gt; ;
+const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
   handleAppCustomClick: () => {
     alert(`Hello ${ reactiveVariables.name?.value }`);
   },
@@ -62,7 +63,7 @@ const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | C
     console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
   },
   singleNameLengthFn: () => {
-    return reactiveVariables.singleNameLength?.value;
+    return reactiveVariables.singleNameLength.value;
   }
 });
         </code>
@@ -93,17 +94,6 @@ const <b>widgetMap</b> = {
     Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
   };
-  const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
-    handleAppCustomClick: () => {
-      alert(`Hello ${ reactiveVariables.name?.value }`);
-    },
-    handleChange: (val: any) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
-    },
-    singleNameLengthFn: () => {
-      return reactiveVariables.singleNameLength?.value;
-    }
-  });
   const reactiveVariableMap = {
     singleName,
     singleNameLength: computed(() => singleName.value.length),
@@ -116,6 +106,18 @@ const <b>widgetMap</b> = {
       }
     ])
   };
+  type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
+  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType): GenericObject<Function> => ({
+    handleAppCustomClick: () => {
+      alert(`Hello ${ reactiveVariables.name?.value }`);
+    },
+    handleChange: (val: any) => {
+      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+    },
+    singleNameLengthFn: () => {
+      return reactiveVariables.singleNameLength.value;
+    }
+  });
   
   const page: Ref<IPage | null> = ref(null);
   fetch(`${import.meta.env.BASE_URL}/mocks/native.json`).then(response => response.json()).then(response => {
