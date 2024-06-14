@@ -21,6 +21,10 @@ const routes = [
         name: 'test',
         component: () => import('../views/Test.vue')
     },
+    {
+        path: '/:pathMatch(.*)',
+        component: () => import('../views/Test.vue')
+    }
 ]
 
 export const router = createRouter({

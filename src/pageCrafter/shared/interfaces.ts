@@ -1,8 +1,9 @@
 import { Ref, ComputedRef } from 'vue';
+import { NavigationType } from './enums';
 
 export type GenericObject<T=any> = {[key: string]: T};
 export type Widgets<T = Function> = Array<IWidget<T> | string>;
-export type EventMap<T> = (reactiveVariables: T) => GenericObject<Function>;
+export type EventMap<T = GenericObject<Ref | ComputedRef>> = (reactiveVariables: T) => GenericObject<Function>;
 
 export interface IWidget<T = Function> {
     id?: string;
@@ -13,9 +14,15 @@ export interface IWidget<T = Function> {
     slots?: GenericObject<Widgets<T>>;
 }
 
+export interface IPageRoute {
+    path: string;
+    navigationType?: NavigationType;
+}
+
 export interface IPage {
     id: string;
     initialData?: GenericObject;
+    route?: IPageRoute;
     children: Widgets<string>;
 }
 
@@ -25,3 +32,8 @@ export interface IVariableParts {
 }
 
 export type DynamicStringSplit = Array<string | { rVar: Ref | ComputedRef, theRest: string} | Function>;
+
+export interface IRouteRecord {
+  path: string;
+  schema: IPage;
+}
