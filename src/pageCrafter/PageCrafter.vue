@@ -97,7 +97,7 @@ watch(
         ) {
             return;
         };
-        
+
         const key = props.route?.fullPath ?? '';
         if (!key)
             return;
@@ -139,4 +139,14 @@ const newReactiveVariableMap = computed(() => {
 const newEventMap = computed(() => {
     return props.eventMap(newReactiveVariableMap.value);
 });
+
+const clearRoutingCache = () => {
+    Object.keys(fallbackCache).forEach((key: string) => {
+        delete fallbackCache[key];
+    });
+    sessionStorage.clear();
+};
+defineExpose({
+    clearRoutingCache
+})
 </script>
