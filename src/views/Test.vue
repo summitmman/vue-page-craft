@@ -1,10 +1,12 @@
 <template>
     <div>
       <PageCrafter
-        :page="page"
+        v-model:page="currentPage"
         :widgetMap="widgetMap"
         :eventMap="eventMap"
         :reactiveVariableMap="reactiveVariableMap"
+        :route="route"
+        :router="router"
       />
       <div>
         Outside page crafter
@@ -18,37 +20,16 @@
   import { defineAsyncComponent, ref, Ref, ComputedRef, computed } from 'vue';
   import PageCrafter from '../pageCrafter/PageCrafter.vue';
   import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
+  import { NavigationType } from '../pageCrafter/shared/enums';
+  import { useRoute, useRouter } from 'vue-router';
+
+  const route = useRoute();
+  const router = useRouter();
   
   const singleName = ref('optical fiber');
   const widgetMap = {
     Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
-  };
-  const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
-    handleAppClick: () => {
-      alert('Hello World');
-    },
-    handleAppCustomClick: () => {
-      alert(`custom button alert ${ reactiveVariables.name?.value }`);
-    },
-    handleChange: (val: any) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
-    },
-    singleNameLengthFn: () => {
-      return reactiveVariables.singleNameLength?.value;
-    }
-  });
-  const reactiveVariableMap = {
-    singleName,
-    singleNameLength: computed(() => singleName.value.length),
-    cities: ref([
-      {
-        name: 'Mumbai',
-      },
-      {
-        name: 'Bengaluru'
-      }
-    ])
   };
   
   const page: IPage = {
@@ -56,6 +37,10 @@
     initialData: {
       name: 'Hello',
       surname: 'World'
+    },
+    route: {
+        path: '/path1',
+        navigationType: NavigationType.Replace
     },
     children: [
       {
@@ -200,7 +185,90 @@
           }
         ]
       },
+      {
+        id: 'submitButton',
+        type: 'Button',
+        events: {
+          click: 'onSubmit'
+        },
+        children: [
+          'Submit to next page'
+        ]
+      }
     ]
+  };
+  const page2: IPage = {
+    id: 'page 2',
+    route: {
+      path: '/path2',
+      navigationType: NavigationType.Push
+    },
+    children: [
+      {
+        type: 'h1',
+        children: [
+          'This is page 2'
+        ]
+      },
+      {
+        id: 'submitButton',
+        type: 'Button',
+        events: {
+          click: 'onSubmitPage2'
+        },
+        children: [
+          'Submit to next page'
+        ]
+      }
+    ]
+  };
+  const page3: IPage = {
+    id: 'page 3',
+    route: {
+      path: '/path3',
+      navigationType: NavigationType.Push
+    },
+    children: [
+      {
+        type: 'h1',
+        children: [
+          'This is page 3'
+        ]
+      }
+    ]
+  };
+  const currentPage = ref(page);
+  const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+    handleAppClick: () => {
+      alert('Hello World');
+    },
+    handleAppCustomClick: () => {
+      alert(`custom button alert ${ reactiveVariables.name?.value }`);
+    },
+    handleChange: (val: any) => {
+      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+    },
+    singleNameLengthFn: () => {
+      return reactiveVariables.singleNameLength?.value;
+    },
+    onSubmit: () => {
+      currentPage.value = page2;
+    },
+    onSubmitPage2: () => {
+      currentPage.value = page3;
+    }
+  });
+  const reactiveVariableMap = {
+    singleName,
+    singleNameLength: computed(() => singleName.value.length),
+    cities: ref([
+      {
+        name: 'Mumbai',
+      },
+      {
+        name: 'Bengaluru'
+      }
+    ])
   };
   </script>
   

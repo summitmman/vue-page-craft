@@ -39,6 +39,7 @@ https://summitmman.github.io/vue-page-craft/
 - [X] v-for with access to loop variables
 - [X] Nested ref variables in template
 - [X] Use any component library
+- [X] Routing support (TODO: Documentation, Demo)
 
 ## Basic usage
 

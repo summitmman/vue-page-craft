@@ -13,7 +13,7 @@
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="3"
+        :expandDepth="3"
         theme="jv-light"
       />
     </template>

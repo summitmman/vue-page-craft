@@ -28,7 +28,7 @@
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
-        expandDepth="3"
+        :expandDepth="3"
         theme="jv-light"
       />
     </template>
@@ -111,7 +111,7 @@ const <b>widgetMap</b> = {
     handleAppCustomClick: () => {
       alert(`Hello ${ reactiveVariables.name?.value }`);
     },
-    handleChange: (val: any) => {
+    handleChange: (val: string) => {
       console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
     },
     singleNameLengthFn: () => {
