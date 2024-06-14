@@ -37,6 +37,8 @@ const props = defineProps({
     }
 });
 
+const fallbackCache: GenericObject<IPage> = {};
+
 // Need to do this if props.page is a ref variable.
 // Ref page would cause page to recursively update itself
 // possible reason is that props.page.initialData is linked, maybe
@@ -56,7 +58,8 @@ const schemaRouting = (schema: IPage) => {
         sessionStorage.setItem(schema.route.path, JSON.stringify(schema));
     } catch (err) {
         console.error('Some error in setting item in sessionStorage (probably data is too large or sessionStorage is full)', err);
-        sessionStorage.clear();
+        console.log('Using fallback cache');
+        fallbackCache[schema.route.path] = schema;
     }
     // replace or push
     // TODO: handle replaceIfFirst
@@ -88,18 +91,30 @@ watch(
 watch(
     () => props.route?.fullPath,
     () => {
+        if (
+            !props.route
+            || !props.router
+        ) {
+            return;
+        };
+        
         const key = props.route?.fullPath ?? '';
         if (!key)
             return;
         const schemaStr = sessionStorage.getItem(key);
-        if (!schemaStr)
+        if (schemaStr) {
+            try{
+                const schema = JSON.parse(schemaStr);
+                page.value = schema;
+            } catch(err) {
+                console.error('Unable to parse cached schema', err);
+                sessionStorage.removeItem(key);
+            }
             return;
-        try{
-            const schema = JSON.parse(schemaStr);
-            page.value = schema;
-        } catch(err) {
-            console.error('Unable to parse cached schema', err);
-            sessionStorage.removeItem(key);
+        }
+        const fallbackSchema = fallbackCache[key];
+        if (fallbackSchema) {
+            page.value = fallbackSchema;
         }
     }
 );
