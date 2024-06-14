@@ -32,8 +32,3 @@ export interface IVariableParts {
 }
 
 export type DynamicStringSplit = Array<string | { rVar: Ref | ComputedRef, theRest: string} | Function>;
-
-export interface IRouteRecord {
-  path: string;
-  schema: IPage;
-}
