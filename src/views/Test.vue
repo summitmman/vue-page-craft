@@ -7,6 +7,7 @@
         :reactiveVariableMap="reactiveVariableMap"
         :route="route"
         :router="router"
+        @no-schema="requestSchema"
       />
       <div>
         Outside page crafter
@@ -269,6 +270,15 @@
         name: 'Bengaluru'
       }
     ])
+  };
+  const requestSchema = () => {
+    console.log('SUMIT LOG', route.fullPath);
+    if (route.fullPath.includes('path1'))
+      currentPage.value = page;
+    else if (route.fullPath.includes('path2'))
+      currentPage.value = page2;
+    else if (route.fullPath.includes('path3'))
+      currentPage.value = page3;
   };
   </script>
   
