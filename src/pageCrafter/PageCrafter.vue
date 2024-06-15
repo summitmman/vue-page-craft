@@ -1,5 +1,6 @@
 <template>
     <WidgetsRenderer
+        v-if="localPage"
         :key="localPage.id"
         :widgets="localPage.children"
         :widgetMap="props.widgetMap"
@@ -13,7 +14,7 @@ import { IPage, GenericObject, EventMap } from './shared/interfaces';
 import WidgetsRenderer from './WidgetsRenderer.vue';
 import { NavigationType } from './shared/enums';
 
-const page = defineModel('page', { type: Object as () => IPage, required: true });
+const page = defineModel('page', { type: Object as () => IPage, required: false });
 const props = defineProps({
     widgetMap: {
         type: Object as () => GenericObject,
@@ -36,14 +37,29 @@ const props = defineProps({
         required: false
     }
 });
+const emits = defineEmits(['no-schema']);
 
 const fallbackCache: GenericObject<IPage> = {};
+// flag which tells that route was changed cause schema triggered it
+// so do not handle route but only reset flag
+let isRouteChangeFromSchema = false;
+// flag which tells that schema was changed cause route changed and triggered it
+// so do not handle schema new schema which was set in v-model but only reset flag
+let isSchemaChangeFromRoute = false;
+// flag which tells that no-schema event was emitted and we are expecting parent to set a new page schema
+// no-schema is emitted when route changes and a schema does not exist
+// in that case we need not handle route
+let isInitiatedFromNoSchema = false;
 
 // Need to do this if props.page is a ref variable.
 // Ref page would cause page to recursively update itself
 // possible reason is that props.page.initialData is linked, maybe
-const localPage: ShallowRef<IPage> = shallowRef(JSON.parse(JSON.stringify(page.value)));
+const localPage: ShallowRef<IPage | null> = shallowRef(JSON.parse(JSON.stringify(null)));
 const schemaRouting = (schema: IPage) => {
+    if (isSchemaChangeFromRoute) {
+        isSchemaChangeFromRoute = false;
+        return;
+    }
     // Then check if routing is needed
     // not needed if route and router objects were not passed or if schema does not demand routing
     if (
@@ -61,6 +77,14 @@ const schemaRouting = (schema: IPage) => {
         console.log('Using fallback cache');
         fallbackCache[schema.route.path] = schema;
     }
+    
+    // in case of no-shema event we want to ignore route handling, but still have the cache
+    if (isInitiatedFromNoSchema) {
+        isInitiatedFromNoSchema = false;
+        return;
+    }
+
+    isRouteChangeFromSchema = true;
     // replace or push
     // TODO: handle replaceIfFirst
     if (schema.route.navigationType === NavigationType.Replace) {
@@ -77,20 +101,37 @@ const loadSchema = (schema: IPage) => {
     // route if the schema demands it
     schemaRouting(schema);
 };
+const onNoSchemaFound = () => {
+    emits('no-schema');
+    isInitiatedFromNoSchema = true;
+    // reset other flags
+    isRouteChangeFromSchema = false;
+    isSchemaChangeFromRoute = false;
+};
 
 // loadSchema is initially done to handle first time routing
-loadSchema(page.value);
+if (page.value) {
+    loadSchema(page.value);
+} else {
+    onNoSchemaFound();
+}
 // update schema if it changes from outside
 watch(
     page,
     () => {
-        loadSchema(page.value);
+        if (page.value)
+            loadSchema(page.value);
     }
 );
 // watch route changes, if schema is cached then load it
 watch(
     () => props.route?.fullPath,
     () => {
+        if (isRouteChangeFromSchema) {
+            isRouteChangeFromSchema = false;
+            return;
+        }
+
         if (
             !props.route
             || !props.router
@@ -106,6 +147,7 @@ watch(
             try{
                 const schema = JSON.parse(schemaStr);
                 page.value = schema;
+                isSchemaChangeFromRoute = true;
             } catch(err) {
                 console.error('Unable to parse cached schema', err);
                 sessionStorage.removeItem(key);
@@ -115,14 +157,17 @@ watch(
         const fallbackSchema = fallbackCache[key];
         if (fallbackSchema) {
             page.value = fallbackSchema;
+            isSchemaChangeFromRoute = true;
+            return;
         }
+        onNoSchemaFound();
     }
 );
 
 const newReactiveVariableMap = computed(() => {
-    if (localPage.value.initialData) {
+    if (localPage.value && localPage.value.initialData) {
         Object.keys(localPage.value.initialData).forEach((key) => {
-            if (!localPage.value.initialData) {
+            if (!localPage.value?.initialData) {
                 return;
             }
             if (!isRef(localPage.value.initialData[key])) {
@@ -140,6 +185,7 @@ const newEventMap = computed(() => {
     return props.eventMap(newReactiveVariableMap.value);
 });
 
+// expose clearing temp cache and sessionstorage
 const clearRoutingCache = () => {
     Object.keys(fallbackCache).forEach((key: string) => {
         delete fallbackCache[key];
