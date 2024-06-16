@@ -46,10 +46,6 @@ let isRouteChangeFromSchema = false;
 // flag which tells that schema was changed cause route changed and triggered it
 // so do not handle schema new schema which was set in v-model but only reset flag
 let isSchemaChangeFromRoute = false;
-// flag which tells that no-schema event was emitted and we are expecting parent to set a new page schema
-// no-schema is emitted when route changes and a schema does not exist
-// in that case we need not handle route
-let isInitiatedFromNoSchema = false;
 
 // Need to do this if props.page is a ref variable.
 // Ref page would cause page to recursively update itself
@@ -77,13 +73,12 @@ const schemaRouting = (schema: IPage) => {
         console.log('Using fallback cache');
         fallbackCache[schema.route.path] = schema;
     }
-    
-    // in case of no-shema event we want to ignore route handling, but still have the cache
-    if (isInitiatedFromNoSchema) {
-        isInitiatedFromNoSchema = false;
+
+    // do not do anything if you are already on the required path
+    if (props.route.fullPath === schema.route.path) {
         return;
     }
-
+    
     isRouteChangeFromSchema = true;
     // replace or push
     // TODO: handle replaceIfFirst
@@ -101,20 +96,15 @@ const loadSchema = (schema: IPage) => {
     // route if the schema demands it
     schemaRouting(schema);
 };
+// if no-schema event was emitted and we are expecting parent to set a new page schema
+// no-schema is emitted when route changes and a schema does not exist
 const onNoSchemaFound = () => {
     emits('no-schema');
-    isInitiatedFromNoSchema = true;
-    // reset other flags
+    // reset flags
     isRouteChangeFromSchema = false;
     isSchemaChangeFromRoute = false;
 };
 
-// loadSchema is initially done to handle first time routing
-if (page.value) {
-    loadSchema(page.value);
-} else {
-    onNoSchemaFound();
-}
 // update schema if it changes from outside
 watch(
     page,
@@ -184,6 +174,14 @@ const newReactiveVariableMap = computed(() => {
 const newEventMap = computed(() => {
     return props.eventMap(newReactiveVariableMap.value);
 });
+
+// init code
+// loadSchema is initially done to handle first time routing
+if (page.value) {
+    loadSchema(page.value);
+} else {
+    onNoSchemaFound();
+}
 
 // expose clearing temp cache and sessionstorage
 const clearRoutingCache = () => {
