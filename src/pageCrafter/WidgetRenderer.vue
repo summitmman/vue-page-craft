@@ -166,7 +166,7 @@ export default defineComponent({
                 if (!widget.props) {
                     widget.props = {};
                 }
-                widget.props.widgetMap = props.widgetMap.value;
+                widget.props.widgetMap = props.widgetMap;
                 widget.props.eventMap = props.eventMap;
                 widget.props.reactiveVariableMap = props.reactiveVariableMap;
             }
@@ -176,7 +176,7 @@ export default defineComponent({
                     widget.props = {};
                 }
                 widget.props.loopChildren = widget.children;
-                widget.props.widgetMap = props.widgetMap.value;
+                widget.props.widgetMap = props.widgetMap;
                 widget.props.eventMap = props.eventMap;
                 widget.props.reactiveVariableMap = props.reactiveVariableMap;
             }
