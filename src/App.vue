@@ -5,6 +5,7 @@
         <li :ref="(el) => menuItems['native'] = el"><RouterLink class="menu-link" :to="{name: 'native'}">Native</RouterLink></li>
         <li :ref="(el) => menuItems['vuetify'] = el"><RouterLink class="menu-link" :to="{name: 'vuetify'}">Vuetify</RouterLink></li>
         <li :ref="(el) => menuItems['naiveui'] = el"><RouterLink class="menu-link" :to="{name: 'naiveui'}">Naive UI</RouterLink></li>
+        <li :ref="(el) => menuItems['routing'] = el"><RouterLink class="menu-link" :to="{name: 'routing'}">Routing</RouterLink></li>
       </ul>
       <div class="underline" :style="{ transform: `translateX(${underlineLeftOffset}px)` }"></div>
     </nav>
@@ -19,7 +20,11 @@ import { ref, computed } from 'vue';
 const route = useRoute();
 const menuItems = ref<{[key: string]: any}>({});
 const underlineLeftOffset = computed(() => {
-  const menuEl = menuItems.value[String(route.name)];
+  let m = String(route.name);
+  if (!route.name && route.path.startsWith('/routing/page')) {
+    m = 'routing';
+  }
+  const menuEl = menuItems.value[m];
   if (!menuEl) {
     return 0;
   }

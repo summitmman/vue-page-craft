@@ -23,6 +23,12 @@ pre {
 .mt-2 {
   margin-top: 2px;
 }
+.mt-10 {
+  margin-top: 10px !important;
+}
+.mt-15 {
+  margin-top: 15px !important;
+}
 .mb-10 {
   margin-bottom: 10px !important;
 }
@@ -31,6 +37,9 @@ pre {
 }
 .ml-10 {
   margin-left: 10px !important;
+}
+.ml-15 {
+  margin-left: 15px !important;
 }
 .block {
   display: block;
@@ -49,6 +58,9 @@ pre {
 }
 .p-15 {
   padding: 15px;
+}
+.absolute {
+  position: absolute;
 }
 
 .banner {

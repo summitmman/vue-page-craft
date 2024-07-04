@@ -1,0 +1,58 @@
+{
+    "id": "page1",
+    "route": {
+        "path": "/routing/page1",
+        "navigationType": "replace"
+    },
+    "children": [
+        {
+            "type": "div",
+            "children": [
+                {
+                    "type": "h1",
+                    "props": {
+                        "class": "mt-15"
+                    },
+                    "children": [
+                        "This is page 1"
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        "This page is rendered through vue-page-craft. Here we demonstrate how routing works. Notice here the schema contains the path in the url. We will have 3 routes 'page1', 'page2' and 'page3'. Click on the CTA below to navigate."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        {
+                            "type": "b",
+                            "children": [
+                                "Note: "
+                            ]
+                        },
+                        "After navigating you may click on browser back to move between pages and it should work as expected."
+                    ]
+                },
+                {
+                    "type": "div",
+                    "children": [
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn"
+                            },
+                            "events": {
+                                "click": "routeToPage2"
+                            },
+                            "children": [
+                                "Go to page 2"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
