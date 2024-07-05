@@ -107,12 +107,12 @@ const <b>widgetMap</b> = {
     ])
   };
   type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
-  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType): GenericObject<Function> => ({
+  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, data: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
       alert(`Hello ${ reactiveVariables.name?.value }`);
     },
     handleChange: (val: string) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+      console.log('SUMIT LOG', val, reactiveVariables.surname?.value, data);
     },
     singleNameLengthFn: () => {
       return reactiveVariables.singleNameLength.value;

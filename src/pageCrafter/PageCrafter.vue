@@ -172,7 +172,7 @@ const newReactiveVariableMap = computed(() => {
     return props.reactiveVariableMap;
 });
 const newEventMap = computed(() => {
-    return props.eventMap(newReactiveVariableMap.value);
+    return props.eventMap(newReactiveVariableMap.value, page.value?.data);
 });
 
 // init code

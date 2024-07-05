@@ -17,6 +17,21 @@ const routes = [
         component: () => import('../views/NaiveUI.vue')
     },
     {
+        path: '/routing',
+        component: () => import('../views/Routing.vue'),
+        children: [
+            {
+                path: '',
+                name: 'routing',
+                component: () => import('../views/RoutingChild.vue'),
+            },
+            {
+                path: '/routing/:pathMatch(.*)',
+                component: () => import('../views/RoutingChild.vue'),
+            }
+        ]
+    },
+    {
         path: '/test',
         name: 'test',
         component: () => import('../views/Test.vue')

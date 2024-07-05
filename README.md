@@ -39,7 +39,7 @@ https://summitmman.github.io/vue-page-craft/
 - [X] v-for with access to loop variables
 - [X] Nested ref variables in template
 - [X] Use any component library
-- [X] Routing support (TODO: Documentation, Demo)
+- [X] Routing support
 
 ## Basic usage
 
@@ -253,6 +253,51 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
     }
 },
 ```
+
+5. **Routing**
+   Add vue-router to the project and create routes as follows:
+
+   ```
+   const routes = {
+       path: '/routing',
+       component: () => import('../views/Routing.vue'),
+       children: [
+           {
+               path: '',
+               name: 'routing',
+               component: () => import('../views/RoutingChild.vue'),
+           },
+           {
+               path: '/routing/:pathMatch(.*)',
+               component: () => import('../views/RoutingChild.vue'),
+           }
+       ]
+   }
+   ```
+
+   All routes must lead to the Page component where we have the PageCrafter
+
+   Pass route and router to the PageCrafter, as routing happens through these. Also pass a function which is responsible of fetching new schema, mostly based on the current url, This function is called when we change the url which does not match the current schema so we need to fetch a new schema.
+
+   ```
+   <PageCrafter
+       v-model:page="page"
+       :eventMap="eventMap"
+       :reactiveVariableMap="reactiveVariableMap"
+       :route="route"
+       :router="router"
+       @no-schema="requestSchema"
+   />
+   ```
+
+   In the schema, add a new property "route" to the root
+
+   ```
+   "route": {
+           "path": "/routing/page1",
+           "navigationType": "replace"
+   },
+   ```
 
 ## Findings
 
