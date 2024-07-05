@@ -21,6 +21,9 @@
             }
         ]
     },
+    "data": {
+        "sample": "data"
+    },
     "children": [
         {
             "type": "div",

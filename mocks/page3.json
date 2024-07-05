@@ -1,0 +1,59 @@
+{
+    "id": "page3",
+    "route": {
+        "path": "/routing/page3",
+        "navigationType": "push"
+    },
+    "children": [
+        {
+            "type": "div",
+            "children": [
+                {
+                    "type": "h1",
+                    "props": {
+                        "class": "mt-15"
+                    },
+                    "children": [
+                        "This is page 3"
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        "So we have seen the two ways to route programatically. You may ofcourse use browser back or forward buttons normally to load the other schemas. The CTA below simply does router.back() to go back to the previous page."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        {
+                            "type": "b",
+                            "children": [
+                                "Note: "
+                            ]
+                        },
+                        "After navigating you may click on browser back to move between pages and it should work as expected."
+                    ]
+                },
+                {
+                    "type": "div",
+                    "children": [
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn mt-10",
+                                "style": "width: 100%; padding: 10px"
+                            },
+                            "events": {
+                                "click": "routeBack"
+                            },
+                            "children": [
+                                "Go back"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
