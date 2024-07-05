@@ -68,7 +68,7 @@
     const jsonData = ref(null);
     const reactiveVariableMap = {};
     type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
-    const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType): GenericObject<Function> => ({
+    const eventMap: EventMap<reactiveVariablesType> = (): GenericObject<Function> => ({
         routeToPage2: () => {
             getSchemaFor('page2');
         },

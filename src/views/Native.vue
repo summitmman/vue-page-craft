@@ -107,7 +107,7 @@ const <b>widgetMap</b> = {
     ])
   };
   type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
-  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, data: GenericObject): GenericObject<Function> => ({
+  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, data?: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
       alert(`Hello ${ reactiveVariables.name?.value }`);
     },
