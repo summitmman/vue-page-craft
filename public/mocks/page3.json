@@ -20,7 +20,7 @@
                 {
                     "type": "p",
                     "children": [
-                        "This page is rendered through vue-page-craft. Here we demonstrate how routing works. Notice here the schema contains the path in the url. We will have 3 routes 'page1', 'page2' and 'page3'. Click on the CTA below to navigate."
+                        "So we have seen the two ways to route programatically. You may ofcourse use browser back or forward buttons normally to load the other schemas. The CTA below simply does router.back() to go back to the previous page."
                     ]
                 },
                 {
@@ -33,6 +33,24 @@
                             ]
                         },
                         "After navigating you may click on browser back to move between pages and it should work as expected."
+                    ]
+                },
+                {
+                    "type": "div",
+                    "children": [
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn mt-10",
+                                "style": "width: 100%; padding: 10px"
+                            },
+                            "events": {
+                                "click": "routeBack"
+                            },
+                            "children": [
+                                "Go back"
+                            ]
+                        }
                     ]
                 }
             ]

@@ -20,11 +20,57 @@
                 {
                     "type": "p",
                     "children": [
-                        "This page is rendered through vue-page-craft. Here we demonstrate how routing works. Notice here the schema contains the path in the url. We will have 3 routes 'page1', 'page2' and 'page3'. Click on the CTA below to navigate."
+                        "This page is rendered through vue-page-craft to demonstrate routing. Notice the schema has a property \"route\" where you may mention the path for this page schema. When the schema gets loaded the url reflects in the address bar and a routing history is created. Vue page craft also caches the schema to facillitate browser back and forward."
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "mt-10"
+                    },
+                    "children": [
+                        "There are two ways to route:",
+                        {
+                            "type": "ol",
+                            "props": {
+                                "style": "margin-left: 20px"
+                            },
+                            "children": [
+                                {
+                                    "type": "li",
+                                    "children": [
+                                        "load new schema with new route"
+                                    ]
+                                },
+                                {
+                                    "type": "li",
+                                    "children": [
+                                        "change route and then let page-craft request for a new schema"
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
                     "type": "p",
+                    "props": {
+                        "class": "mt-10"
+                    },
+                    "children": [
+                        "Here on click of the CTA 'Go to page 2' we implement the first type of routing; load schema for page 2 and then update the url. You may check the function ",
+                        {
+                            "type": "b",
+                            "children": [ "'routeToPage2'" ]
+                        },
+                        " in eventMap for reference."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "props": {
+                        "class": "mt-10"
+                    },
                     "children": [
                         {
                             "type": "b",
@@ -41,7 +87,8 @@
                         {
                             "type": "button",
                             "props": {
-                                "class": "native-btn"
+                                "class": "native-btn mt-10",
+                                "style": "width: 100%; padding: 10px"
                             },
                             "events": {
                                 "click": "routeToPage2"

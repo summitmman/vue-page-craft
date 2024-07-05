@@ -15,6 +15,7 @@
       <template v-slot:schema>
         <JsonViewer
           v-if="jsonData"
+          :key="route.path"
           :value="jsonData"
           :expandDepth="3"
           theme="jv-light"
@@ -23,19 +24,7 @@
       <template v-slot:state>
         <pre>
           <code>
-  const singleName = ref('Beta');
-  const <b>reactiveVariableMap</b> = {
-    singleName,
-    singleNameLength: computed(() => singleName.value.length),
-    cities: ref([
-      {
-        name: 'Mumbai',
-      },
-      {
-        name: 'Bengaluru'
-      }
-    ])
-  };
+  const <b>reactiveVariableMap</b> = {};
           </code>
         </pre>
       </template>
@@ -43,15 +32,15 @@
         <pre>
           <code>
   type reactiveVariablesType = typeof reactiveVariableMap & GenericObject &lt; Ref | ComputedRef &gt; ;
-  const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
-    handleAppCustomClick: () => {
-      alert(`Hello ${ reactiveVariables.name?.value }`);
+  const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVariables: reactiveVariablesType): GenericObject &lt; Function &gt; => ({
+    routeToPage2: () => {
+      getSchemaFor('page2');
     },
-    handleChange: (val: any) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+    routeToPage3: () => {
+      router.push('/routing/page3');
     },
-    singleNameLengthFn: () => {
-      return reactiveVariables.singleNameLength.value;
+    routeBack: () => {
+      router.back();
     }
   });
           </code>
@@ -60,10 +49,7 @@
       <template v-slot:component-map>
         <pre>
           <code>
-  const <b>widgetMap</b> = {
-    Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
-    Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
-  };
+  const <b>widgetMap</b> = {};
           </code>
         </pre>
       </template>
@@ -88,6 +74,9 @@
         },
         routeToPage3: () => {
             router.push('/routing/page3');
+        },
+        routeBack: () => {
+          router.back();
         }
     });
     

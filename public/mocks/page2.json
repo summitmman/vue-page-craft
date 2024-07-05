@@ -20,11 +20,30 @@
                 {
                     "type": "p",
                     "children": [
-                        "This page is rendered through vue-page-craft. Here we demonstrate how routing works. Notice here the schema contains the path in the url. We will have 3 routes 'page1', 'page2' and 'page3'. Click on the CTA below to navigate."
+                        "As you see, the new schema for page 2 is loaded which has the new routing path and it has got updated in the url. To go back to page 1 from here you may use browser back. The schema for page 1 is cached so loading the page will be quick."
                     ]
                 },
                 {
                     "type": "p",
+                    "props": {
+                        "class": "mt-10"
+                    },
+                    "children": [
+                        "The second way of routing is to push a new route and let vue-page-craft trigger call for the schema for that route. So when you click on the CTA below we only change the route. You may check the function ",
+                        {
+                            "type": "b",
+                            "children": [
+                                "'routeToPage3'"
+                            ]
+                        },
+                        " in eventMap for reference."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "props": {
+                        "class": "mt-10"
+                    },
                     "children": [
                         {
                             "type": "b",
@@ -41,7 +60,8 @@
                         {
                             "type": "button",
                             "props": {
-                                "class": "native-btn"
+                                "class": "native-btn mt-10",
+                                "style": "width: 100%; padding: 10px"
                             },
                             "events": {
                                 "click": "routeToPage3"
