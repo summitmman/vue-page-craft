@@ -8,7 +8,7 @@
             :reactiveVariableMap="reactiveVariableMap"
             :route="route"
             :router="router"
-            @no-schema="requestSchema"
+            :routes="routes"
           />
         </div>
       </template>
@@ -59,41 +59,68 @@
   <script setup lang="ts">
     import { ref, Ref, ComputedRef } from 'vue';
     import PageCrafter from '../pageCrafter/PageCrafter.vue';
-    import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
+    import { IPage, GenericObject, EventMap, IRouteConfig } from '../pageCrafter/shared/interfaces';
     import { useRouter, useRoute } from 'vue-router';
     
     const route = useRoute();
     const router = useRouter();
 
     const jsonData = ref(null);
+    const page: Ref<IPage | null> = ref(null);
+    
+    // api to fetch schema
+    const getSchemaFor = (pageName: string) => {
+      return fetch(`${import.meta.env.BASE_URL}/mocks/${pageName}.json`).then(response => response.json());
+    };
+
     const reactiveVariableMap = {};
     type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
+    
     const eventMap: EventMap<reactiveVariablesType> = (): GenericObject<Function> => ({
-        routeToPage2: () => {
-            getSchemaFor('page2');
-        },
-        routeToPage3: () => {
-            router.push('/routing/page3');
-        },
-        routeBack: () => {
-          router.back();
-        }
+      routeToPage2: async () => {
+        const response = await getSchemaFor('page2');
+        jsonData.value = JSON.parse(JSON.stringify(response));
+        page.value = response;
+      },
+      routeToPage3: () => {
+        router.push('/routing/page3');
+      },
+      routeBack: () => {
+        router.back();
+      }
     });
     
-    const page: Ref<IPage | null> = ref(null);
-    const getSchemaFor = (pageName: string) => {
-        fetch(`${import.meta.env.BASE_URL}/mocks/${pageName}.json`).then(response => response.json()).then(response => {
-            jsonData.value = JSON.parse(JSON.stringify(response));
-            page.value = response;
-        });
-    };
-    const requestSchema = () => {
-        let pageName = route.path.replace('/routing', '').replace('/', '');
-        if (!pageName) {
+    const routes: Array<IRouteConfig> = [
+      {
+        path: new RegExp(/\/routing\/*.*/gm),
+        schemaFetch: () => {
+          let pageName = route.path.replace('/routing', '').replace('/', '');
+          if (!pageName) {
             pageName = 'page1';
+          }
+          return getSchemaFor(pageName);
+        },
+        afterNavigate: (response: any) => {
+          jsonData.value = JSON.parse(JSON.stringify(response));
         }
-        getSchemaFor(pageName);
-    };
+      },
+      {
+        path: 'error',
+        schemaFetch: (err: any) => {
+          return Promise.resolve({
+            id: 'error-page',
+            children: [
+              {
+                type: 'h1',
+                children: [
+                  'Page not found'
+                ]
+              }
+            ]
+          } as IPage);
+        }
+      }
+    ];
     
   </script>
     

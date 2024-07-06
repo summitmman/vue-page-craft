@@ -7,7 +7,7 @@
         :reactiveVariableMap="reactiveVariableMap"
         :route="route"
         :router="router"
-        @no-schema="requestSchema"
+        :routes="routes"
       />
       <div>
         Outside page crafter
@@ -20,7 +20,7 @@
   <script setup lang="ts">
   import { defineAsyncComponent, ref, Ref, ComputedRef, computed } from 'vue';
   import PageCrafter from '../pageCrafter/PageCrafter.vue';
-  import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
+  import { IPage, GenericObject, EventMap, IRouteConfig } from '../pageCrafter/shared/interfaces';
   import { NavigationType } from '../pageCrafter/shared/enums';
   import { useRoute, useRouter } from 'vue-router';
 
@@ -271,15 +271,42 @@
       }
     ])
   };
-  const requestSchema = () => {
-    console.log('SUMIT LOG', route.fullPath);
-    if (route.fullPath.includes('path1'))
-      currentPage.value = page;
-    else if (route.fullPath.includes('path2'))
-      currentPage.value = page2;
-    else if (route.fullPath.includes('path3'))
-      currentPage.value = page3;
-  };
+  const routes: Array<IRouteConfig> = [
+    {
+      path: '/path1',
+      schemaFetch: () => {
+        return Promise.resolve(page);
+      }
+    },
+    {
+      path: '/path2',
+      schemaFetch: () => {
+        return Promise.resolve(page2);
+      }
+    },
+    {
+      path: '/path3',
+      schemaFetch: () => {
+        return Promise.resolve(page3);
+      }
+    },
+    {
+      path: 'error',
+      schemaFetch: (err: any) => {
+        return Promise.resolve({
+          id: 'error-page',
+          children: [
+            {
+              type: 'h1',
+              children: [
+                'Page not found'
+              ]
+            }
+          ]
+        } as IPage);
+      }
+    }
+  ];
   </script>
   
   <style>

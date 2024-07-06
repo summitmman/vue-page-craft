@@ -275,9 +275,45 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
    }
    ```
 
-   All routes must lead to the Page component where we have the PageCrafter
+   All routes must lead to the Page component where we have the PageCrafter.
 
-   Pass route and router to the PageCrafter, as routing happens through these. Also pass a function which is responsible of fetching new schema, mostly based on the current url, This function is called when we change the url which does not match the current schema so we need to fetch a new schema.
+   Routes handled by the PageCrafter needs to be defined separately so create the array where the PageCrafter is added:
+
+   ```
+   const routes: Array<IRouteConfig> = [
+       {
+           path: new RegExp(/\/routing\/*.*/gm),
+           schemaFetch: () => {
+               let pageName = route.path.replace('/routing', '').replace('/', '');
+               if (!pageName) {
+                   pageName = 'page1';
+               }
+               return getSchemaFor(pageName);
+           },
+           afterNavigate: (response: any) => {
+               jsonData.value = JSON.parse(JSON.stringify(response));
+           }
+       },
+       {
+           path: 'error',
+           schemaFetch: (err: any) => {
+               return Promise.resolve({
+                   id: 'error-page',
+                   children: [
+                       {
+                           type: 'h1',
+                           children: [
+                               'Page not found'
+                           ]
+                       }
+                   ]
+               } as IPage);
+           }
+       }
+   ];
+   ```
+
+   Pass route, router and the routes to the PageCrafter, as routing will happen through these.
 
    ```
    <PageCrafter
@@ -286,7 +322,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
        :reactiveVariableMap="reactiveVariableMap"
        :route="route"
        :router="router"
-       @no-schema="requestSchema"
+       :routes="routes"
    />
    ```
 

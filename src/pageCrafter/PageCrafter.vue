@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { ref, Ref, ComputedRef, isRef, computed, watch, ShallowRef, shallowRef } from 'vue';
-import { IPage, GenericObject, EventMap } from './shared/interfaces';
+import { IPage, GenericObject, EventMap, IRouteConfig } from './shared/interfaces';
 import WidgetsRenderer from './WidgetsRenderer.vue';
 import { NavigationType } from './shared/enums';
 
@@ -35,9 +35,12 @@ const props = defineProps({
     route: {
         type: Object as () => ({ fullPath: string }),
         required: false
+    },
+    routes: {
+        type: Array as () => Array<IRouteConfig>,
+        required: false
     }
 });
-const emits = defineEmits(['no-schema']);
 
 const fallbackCache: GenericObject<IPage> = {};
 // flag which tells that route was changed cause schema triggered it
@@ -98,8 +101,47 @@ const loadSchema = (schema: IPage) => {
 };
 // if no-schema event was emitted and we are expecting parent to set a new page schema
 // no-schema is emitted when route changes and a schema does not exist
-const onNoSchemaFound = () => {
-    emits('no-schema');
+const onNoSchemaFound = async () => {
+    if (props.routes?.length && props.route?.fullPath) {
+        // find route config which matches path
+        const targetRoute = props.routes.find(item => {
+            if (typeof item.path === 'string') {
+                return props.route?.fullPath === item.path;
+            }
+            return (props.route?.fullPath ?? '').match(item.path)?.length;
+        });
+        if (targetRoute) {
+            targetRoute.beforeNavigate && targetRoute.beforeNavigate();
+            try {
+                // call function to fetch required schema
+                const schema = await targetRoute.schemaFetch();
+                if (schema) {
+                    page.value = schema;
+                    targetRoute.afterNavigate && targetRoute.afterNavigate(schema);
+                }
+            } catch(error) {
+                // if there is any issue with fetching schema, find the error route config and run it
+                const errorRoute = props.routes.find(item => item.path === 'error');
+                if (errorRoute) {
+                    const errorSchema = await errorRoute.schemaFetch({ code: 'ERROR_IN_FETCH', message: 'There was an issue fetching the required route', error });
+                    if (errorSchema) {
+                        page.value = errorSchema;
+                        errorRoute.afterNavigate && errorRoute.afterNavigate(errorSchema);
+                    }
+                }
+            }
+        } else {
+            // if no routes match, find the error route config and run it
+            const errorRoute = props.routes.find(item => item.path === 'error');
+            if (errorRoute) {
+                const errorSchema = await errorRoute.schemaFetch({ code: 'ROUTE_NOT_FOUND', message: 'Route not found' });
+                if (errorSchema) {
+                    page.value = errorSchema;
+                    errorRoute.afterNavigate && errorRoute.afterNavigate(errorSchema);
+                }
+            }
+        }
+    }
     // reset flags
     isRouteChangeFromSchema = false;
     isSchemaChangeFromRoute = false;
