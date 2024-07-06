@@ -292,7 +292,7 @@
     },
     {
       path: 'error',
-      schemaFetch: (err: any) => {
+      schemaFetch: () => {
         return Promise.resolve({
           id: 'error-page',
           children: [
