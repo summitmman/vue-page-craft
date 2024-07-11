@@ -10,6 +10,7 @@
                 :widgetMap="props.widgetMap"
                 :eventMap="props.eventMap"
                 :reactiveVariableMap="{ ...props.reactiveVariableMap, [props.widget.props?.id ?? '' + slotName + 'SlotProps']: slotProps }"
+                :storeReactiveVariableMap="props.storeReactiveVariableMap"
             />
         </template>
         <WidgetsRenderer
@@ -18,6 +19,7 @@
             :widgetMap="props.widgetMap"
             :eventMap="props.eventMap"
             :reactiveVariableMap="props.reactiveVariableMap"
+            :storeReactiveVariableMap="props.storeReactiveVariableMap"
         />
     </component>
 </template>
@@ -52,6 +54,10 @@ export default defineComponent({
             default: () => {}
         },
         reactiveVariableMap: {
+            type: Object as () => GenericObject<Ref | ComputedRef>,
+            default: () => {}
+        },
+        storeReactiveVariableMap: {
             type: Object as () => GenericObject<Ref | ComputedRef>,
             default: () => {}
         }
@@ -99,7 +105,7 @@ export default defineComponent({
                         if (typeof value === 'string') {
                             const match = regex.exec(value);
                             if (match) {
-                                const splitStrArr: DynamicStringSplit = splitDynamicStr(value, props.reactiveVariableMap);
+                                const splitStrArr: DynamicStringSplit = splitDynamicStr(value, props.reactiveVariableMap, props.storeReactiveVariableMap);
                                 if (splitStrArr.length === 1) {
                                     const item = splitStrArr[0];
                                     if (typeof item !== 'string' && typeof item !== 'function') {
@@ -169,6 +175,7 @@ export default defineComponent({
                 widget.props.widgetMap = props.widgetMap;
                 widget.props.eventMap = props.eventMap;
                 widget.props.reactiveVariableMap = props.reactiveVariableMap;
+                widget.props.storeReactiveVariableMap = props.storeReactiveVariableMap;
             }
             // v-for
             if (widget.type === 'v-for') {
@@ -179,6 +186,7 @@ export default defineComponent({
                 widget.props.widgetMap = props.widgetMap;
                 widget.props.eventMap = props.eventMap;
                 widget.props.reactiveVariableMap = props.reactiveVariableMap;
+                widget.props.storeReactiveVariableMap = props.storeReactiveVariableMap;
             }
         };
         initializePropsEvents();

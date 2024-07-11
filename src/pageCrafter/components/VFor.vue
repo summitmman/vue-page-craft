@@ -6,6 +6,7 @@
         :widgetMap="props.widgetMap"
         :eventMap="props.eventMap"
         :reactiveVariableMap="{ ...props.reactiveVariableMap, [props.id + 'Item']: item, [props.id + 'Index']: index }"
+        :storeReactiveVariableMap="storeReactiveVariableMap"
     />
 </template>
 <script setup lang="ts">
@@ -36,6 +37,10 @@ const props = defineProps({
         default: () => {}
     },
     reactiveVariableMap: {
+        type: Object as () => GenericObject<Ref | ComputedRef>,
+        default: () => {}
+    },
+    storeReactiveVariableMap: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     }

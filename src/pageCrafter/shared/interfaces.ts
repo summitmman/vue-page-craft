@@ -3,7 +3,7 @@ import { NavigationType } from './enums';
 
 export type GenericObject<T=any> = {[key: string]: T};
 export type Widgets<T = Function> = Array<IWidget<T> | string>;
-export type EventMap<T = GenericObject<Ref | ComputedRef>> = (reactiveVariables: T, data?: GenericObject) => GenericObject<Function>;
+export type EventMap<T = GenericObject<Ref | ComputedRef>> = (state: T, store: GenericObject<Ref | ComputedRef>, extra?: GenericObject) => GenericObject<Function>;
 
 export interface IWidget<T = Function> {
     id?: string;
@@ -21,9 +21,12 @@ export interface IPageRoute {
 
 export interface IPage {
     id: string;
-    initialData?: GenericObject;
     route?: IPageRoute;
-    data?: GenericObject;
+    dataz?: {
+        state?: GenericObject;
+        store?: GenericObject;
+        extra?: GenericObject;
+    };
     children: Widgets<string>;
 }
 

@@ -343,6 +343,8 @@ To resolve this we had to create Renderer components which simply return the ref
 
 ## Next
 
-* [ ] Types support in events; arguments as well as reactive variable types
 * [ ] Ability to pass expressions in string as well as in props
-* [ ] Make a better demo
+* [ ] Provide configuration to prevent route schema from getting cached
+* [ ] Have 2 sets of initialData, one which is specific to a schema and other which will persist even if other schemas are loaded
+* [ ] Have data api calls parallel to the fetchSchema api, so that one is not waiting for the schema to load and then trigger the data api call
+* [ ] Shimmer/Loader component

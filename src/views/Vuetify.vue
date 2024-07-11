@@ -100,9 +100,10 @@ const widgetMap = {
   'v-list-item': components.VListItem
 };
 
-const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>, store: GenericObject<Ref>): GenericObject<Function> => ({
   sayHi: () => {
     alert(`Hi ${reactiveVariables.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
+    console.log('Value of store is', store.userId?.value);
     reactiveVariables.benefits?.value.push({
       title: 'New Benefit',
       subtitle: 'Get rewards for new benefit',

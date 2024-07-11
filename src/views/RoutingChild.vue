@@ -74,9 +74,9 @@
     };
 
     const reactiveVariableMap = {};
-    type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
+    type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref>;
     
-    const eventMap: EventMap<reactiveVariablesType> = (): GenericObject<Function> => ({
+    const eventMap: EventMap<reactiveVariablesType> = (state: reactiveVariablesType, store: GenericObject<Ref>): GenericObject<Function> => ({
       routeToPage2: async () => {
         const response = await getSchemaFor('page2');
         jsonData.value = JSON.parse(JSON.stringify(response));
@@ -87,6 +87,15 @@
       },
       routeBack: () => {
         router.back();
+      },
+      changeStateStore: () => {
+        if (store.userId) {
+          store.userId.value = 9898989898;
+        }
+        if (state.name) {
+          state.name.value = 'Vinita Koyilot';
+        }
+        console.log('store', store);
       }
     });
     

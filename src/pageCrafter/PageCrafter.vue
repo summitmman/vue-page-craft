@@ -6,6 +6,7 @@
         :widgetMap="props.widgetMap"
         :eventMap="newEventMap"
         :reactiveVariableMap="newReactiveVariableMap"
+        :storeReactiveVariableMap="storeReactiveVariableMap"
     />
 </template>
 <script setup lang="ts">
@@ -197,24 +198,47 @@ watch(
 );
 
 const newReactiveVariableMap = computed(() => {
-    if (localPage.value && localPage.value.initialData) {
-        Object.keys(localPage.value.initialData).forEach((key) => {
-            if (!localPage.value?.initialData) {
+    console.log('SUMIT LOG', 'computed called', localPage.value?.dataz?.state);
+    if (localPage.value?.dataz?.state) {
+        Object.keys(localPage.value.dataz.state).forEach((key) => {
+            if (!localPage.value?.dataz?.state) {
                 return;
             }
-            if (!isRef(localPage.value.initialData[key])) {
-                localPage.value.initialData[key] = ref(localPage.value.initialData[key]);
+            if (!isRef(localPage.value.dataz.state[key])) {
+                localPage.value.dataz.state[key] = ref(localPage.value.dataz.state[key]);
             }
         });
+        console.log('SUMIT LOG', 'reactiveVariableMap', {
+            ...localPage.value.dataz.state,
+            ...props.reactiveVariableMap
+        });
         return {
-            ...localPage.value.initialData,
+            ...localPage.value.dataz.state,
             ...props.reactiveVariableMap
         };
     }
     return props.reactiveVariableMap;
 });
+const storeReactiveVariableMap: GenericObject = {};
+watch(
+    localPage,
+    () => {
+        console.log('SUMIT LOG', 'localPage watch called');
+        if (localPage.value?.dataz?.store) {
+            Object.keys(localPage.value.dataz.store).forEach((key) => {
+                if (!localPage.value?.dataz?.store) {
+                    return;
+                }
+                if (!isRef(localPage.value.dataz.store[key])) {
+                    localPage.value.dataz.store[key] = ref(localPage.value.dataz.store[key]);
+                }
+                storeReactiveVariableMap[key] = localPage.value.dataz.store[key];
+            });
+        }   
+    }
+);
 const newEventMap = computed(() => {
-    return props.eventMap(newReactiveVariableMap.value, page.value?.data);
+    return props.eventMap(newReactiveVariableMap.value, storeReactiveVariableMap, page.value?.dataz?.extra);
 });
 
 // init code

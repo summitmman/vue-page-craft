@@ -3,8 +3,7 @@
     <template v-slot:demo>
       <div class="p-15">
         <PageCrafter
-          v-if="page"
-          :page="page ?? {id: '', children: []}"
+          v-model:page="page"
           :widgetMap="widgetMap"
           :eventMap="eventMap"
           :reactiveVariableMap="reactiveVariableMap"
@@ -107,12 +106,14 @@ const <b>widgetMap</b> = {
     ])
   };
   type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
-  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, data?: GenericObject): GenericObject<Function> => ({
+  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, store: GenericObject<Ref>, extra?: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
       alert(`Hello ${ reactiveVariables.name?.value }`);
     },
     handleChange: (val: string) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value, data);
+      console.log('SUMIT LOG', val, reactiveVariables.surname?.value, store, extra);
+      if (store.userId)
+        store.userId.value = 98989898;
     },
     singleNameLengthFn: () => {
       return reactiveVariables.singleNameLength.value;

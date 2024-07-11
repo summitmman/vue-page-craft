@@ -3,8 +3,8 @@
         v-for="(widget, index) in props.widgets"
         :key="(typeof widget === 'string' ? widget : widget.id + widget.type) + index"
     >
-        <DynamicString v-if="typeof widget === 'string'" :str="widget" :reactiveVariableMap="props.reactiveVariableMap" />
-        <WidgetRenderer v-else :widget="widget" :widgetMap="localWidgetMap" :eventMap="props.eventMap" :reactiveVariableMap="props.reactiveVariableMap" />
+        <DynamicString v-if="typeof widget === 'string'" :str="widget" :reactiveVariableMap="props.reactiveVariableMap" :storeReactiveVariableMap="props.storeReactiveVariableMap" />
+        <WidgetRenderer v-else :widget="widget" :widgetMap="localWidgetMap" :eventMap="props.eventMap" :reactiveVariableMap="props.reactiveVariableMap" :storeReactiveVariableMap="props.storeReactiveVariableMap" />
     </template>
 </template>
 <script setup lang="ts">
@@ -30,6 +30,10 @@ const props = defineProps({
         default: () => {}
     },
     reactiveVariableMap: {
+        type: Object as () => GenericObject<Ref | ComputedRef>,
+        default: () => {}
+    },
+    storeReactiveVariableMap: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     }

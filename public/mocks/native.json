@@ -1,28 +1,33 @@
 {
     "id": "sample-page",
-    "initialData": {
-        "name": "Sumit",
-        "surname": "Man",
-        "benefits": [
-            {
-                "title": "Get Rewards",
-                "subtitle": "Get rewards for every commit that you make",
-                "icon": "/vue-page-craft/img/diamond.png"
-            },
-            {
-                "title": "Get Knowledge",
-                "subtitle": "Professionals will peer review your code and help you learn",
-                "icon": "/vue-page-craft/img/deep-learning.png"
-            },
-            {
-                "title": "Build AI",
-                "subtitle": "Finally build AI bots which will help rule the world",
-                "icon": "/vue-page-craft/img/robotics.png"
-            }
-        ]
-    },
-    "data": {
-        "sample": "data"
+    "dataz": {
+        "state": {
+            "name": "Sumit",
+            "surname": "Man",
+            "benefits": [
+                {
+                    "title": "Get Rewards",
+                    "subtitle": "Get rewards for every commit that you make",
+                    "icon": "/vue-page-craft/img/diamond.png"
+                },
+                {
+                    "title": "Get Knowledge",
+                    "subtitle": "Professionals will peer review your code and help you learn",
+                    "icon": "/vue-page-craft/img/deep-learning.png"
+                },
+                {
+                    "title": "Build AI",
+                    "subtitle": "Finally build AI bots which will help rule the world",
+                    "icon": "/vue-page-craft/img/robotics.png"
+                }
+            ]
+        },
+        "extra": {
+            "sample": "data"
+        },
+        "store": {
+            "userId": "12341234"
+        }
     },
     "children": [
         {
@@ -196,6 +201,7 @@
                             }
                         },
                         "From outside the custom textbox component we get the name \"{{ name }}\" surname \"{{ surname }}\"",
+                        "This data is from the store \"{{ store.userId }}\"",
                         {
                             "type": "br"
                         },
