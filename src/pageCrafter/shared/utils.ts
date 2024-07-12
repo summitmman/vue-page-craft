@@ -20,8 +20,9 @@ export const getVariableAndParts = (variableStr: string): IVariableParts => {
 
 export const splitDynamicStr = (
     value: string,
-    reactiveVariableMap: GenericObject<Ref | ComputedRef>,
-    eventMap: GenericObject<Function> = {}
+    state: GenericObject<Ref | ComputedRef>,
+    store: GenericObject<Ref | ComputedRef> = {},
+    events: GenericObject<Function> = {}
 ): DynamicStringSplit => {
     let tempStr = value;
     const splitStrArr: DynamicStringSplit = [];
@@ -33,23 +34,33 @@ export const splitDynamicStr = (
             continue;
         }
 
-        const variableStr = match[0];
+        let variableStr = match[0];
         const start = match.index;
         const end = start + variableStr.length;
+        let isStoreVariable = false;
 
         if (start > 0) {
             splitStrArr.push(tempStr.substring(0, start));
         }
+        if (variableStr.includes('store.')) {
+            variableStr = variableStr.replace('store.','');
+            isStoreVariable = true;
+        }
         const { variablePart, theRest } = getVariableAndParts(variableStr);
-        if (reactiveVariableMap[variablePart] != null) {
+        if (isStoreVariable && store[variablePart] != null) {
             splitStrArr.push({
-                rVar: reactiveVariableMap[variablePart],
+                rVar: store[variablePart],
                 theRest
             });
-        } else if (eventMap[variablePart] != null) {
-            splitStrArr.push(eventMap[variablePart]);
+        } else if (state[variablePart] != null) {
+            splitStrArr.push({
+                rVar: state[variablePart],
+                theRest
+            });
+        } else if (events[variablePart] != null) {
+            splitStrArr.push(events[variablePart]);
         } else {
-            splitStrArr.push(variableStr);
+            splitStrArr.push(match[0]);
         }
 
         if (end >= tempStr.length) {

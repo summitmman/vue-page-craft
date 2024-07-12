@@ -4,7 +4,15 @@
         "path": "/routing/page1",
         "navigationType": "replace"
     },
-    "children": [
+    "data": {
+        "state": {
+            "name": "Sumit Man"
+        },
+        "store": {
+            "userId": "123123123"
+        }
+    },
+    "schema": [
         {
             "type": "div",
             "children": [
@@ -21,6 +29,24 @@
                     "type": "p",
                     "children": [
                         "This page is rendered through vue-page-craft to demonstrate routing. Notice the schema has a property \"route\" where you may mention the path for this page schema. When the schema gets loaded the url reflects in the address bar and a routing history is created. Vue page craft also caches the schema to facillitate browser back and forward."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        "State value name is {{ name }}; but Store value userId is {{ store.userId }}",
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn mt-10 block"
+                            },
+                            "events": {
+                                "click": "changeStateStore"
+                            },
+                            "children": [
+                                "Change state and store"
+                            ]
+                        }
                     ]
                 },
                 {
@@ -91,7 +117,7 @@
                                 "style": "width: 100%; padding: 10px"
                             },
                             "events": {
-                                "click": "routeToPage2"
+                                "click": "{{ routeToPage2 }}"
                             },
                             "children": [
                                 "Go to page 2"

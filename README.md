@@ -40,18 +40,19 @@ https://summitmman.github.io/vue-page-craft/
 - [X] Nested ref variables in template
 - [X] Use any component library
 - [X] Routing support
+- [X] Persistent store
 
 ## Basic usage
 
 1. In Terminal
 
-```
+```bash
 npm install vue-page-craft
 ```
 
 2. In main.ts
 
-```
+```typescript
 import PageCrafter from 'vue-page-craft';
 
 app.use(PageCrafter);
@@ -59,11 +60,11 @@ app.use(PageCrafter);
 
 3. Create page schema which complies to IPage
 
-```
+```typescript
 import { IPage } from 'vue-page-craft';
 const page: IPage = {
     id: 'sample-page',
-    children: [
+    schema: [
         {
             type: 'h1', // Note: you may use native HTML tags here
             children: [
@@ -96,10 +97,10 @@ const page: IPage = {
 };
 ```
 
-4. Create widgetMap, which is a mapping of string keys to vue components. These keys are used in the page JSON schema. Components can be lazily loaded and mapped. If the components to be used are globally imported then there is no need of adding it to the widgetMap
+4. Create a widget map, which is a mapping of string keys to vue components. These keys are used in the page JSON schema. Components can be lazily loaded and mapped. If the components to be used are globally imported then there is no need of adding it to the widgetMap
 
-```
-const widgetMap = {
+```typescript
+const widgets = {
     CustomButton: defineAsyncComponent(() => import(/* webpackChunkName: "CustomButton" */ './components/CustomButton.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ './components/Name.vue'))
 };
@@ -107,46 +108,49 @@ const widgetMap = {
 
 5. Create set of reactive variables. Note: the initialData that you pass through the JSON page schema are also added to this set.
 
-```
+```typescript
 const singleName = ref('Sumit');
-const reactiveVariableMap = {
-    singleName,
-    singleNameLength: computed(() => singleName.value.length),
-    cities: ref([
-        {
-            name: 'Mumbai',
-        },
-        {
-            name: 'Bengaluru'
-        }
-    ])
+const data: IPageData = {
+    state: {
+        singleName,
+        singleNameLength: computed(() => singleName.value.length),
+        cities: ref([
+            {
+                name: 'Mumbai',
+            },
+            {
+                name: 'Bengaluru'
+            }
+        ])
+    }
+  
 };
 ```
 
-6. Create eventMap, which is a mapping of string keys to functions. Each of these functions will have access to the set of reactive variables powered by Page Crafter
+6. Create an event map, which is a mapping of string keys to functions. Each of these functions will have access to the set of reactive variables powered by Page Crafter
 
-```
-const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+```typescript
+const events: EventMap = (state: GenericObject<Ref | ComputedRef>, store: GenericObject<Ref | ComputedRef>, extra: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
-        alert(`Hello ${ reactiveVariables.name?.value }`);
+        alert(`Hello ${ state.name?.value }`);
     },
     handleChange: (val: any) => {
-        console.log('LOG', val, reactiveVariables.surname?.value);
+        console.log('LOG', val, state.surname?.value);
     },
     singleNameLengthFn: () => {
-        return reactiveVariables.singleNameLength?.value;
+        return state.singleNameLength?.value;
     }
 });
 ```
 
 7. Add to template
 
-```
+```vue
 <PageCrafter
-    :page="page"
-    :widgetMap="widgetMap"
-    :eventMap="eventMap"
-    :reactiveVariableMap="reactiveVariableMap"
+    v-model:page="page"
+    :widgets="widgets"
+    :events="events"
+    :data="data"
 />
 ```
 
@@ -155,7 +159,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 1. **v-model**
    **NOTE**: v-model will not work with native element like `<input />`. You need to create a wrapper vue component which exposes v-model separately.
 
-```
+```typescript
 {
     type: 'Name',
     props: {
@@ -172,7 +176,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 
 2. **v-if**
 
-```
+```typescript
 {
     type: 'v-if',
     props: {
@@ -200,7 +204,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 
 3. **v-for**
 
-```
+```typescript
 {
     type: 'v-for',
     props: {
@@ -220,7 +224,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 
 4. **Named slots**
 
-```
+```typescript
 {
     "type": "Name",
     "props": {
@@ -257,7 +261,7 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 5. **Routing**
    Add vue-router to the project and create routes as follows:
 
-   ```
+   ```typescript
    const routes = {
        path: '/routing',
        component: () => import('../views/Routing.vue'),
@@ -279,8 +283,8 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 
    Routes handled by the PageCrafter needs to be defined separately so create the array where the PageCrafter is added:
 
-   ```
-   const routes: Array<IRouteConfig> = [
+   ```typescript
+    const routes: Array<IRouteConfig> = [
        {
            path: new RegExp(/\/routing\/*.*/gm),
            schemaFetch: () => {
@@ -310,30 +314,64 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
                } as IPage);
            }
        }
-   ];
+    ];
+
+    const routing: IPageRouting = {
+        route: useRoute(),
+        router: useRouter(),
+        routes
+    };
    ```
 
    Pass route, router and the routes to the PageCrafter, as routing will happen through these.
 
-   ```
+   ```vue
    <PageCrafter
        v-model:page="page"
-       :eventMap="eventMap"
-       :reactiveVariableMap="reactiveVariableMap"
-       :route="route"
-       :router="router"
-       :routes="routes"
+       :events="events"
+       :data="data"
+       :routing="routing"
    />
    ```
 
    In the schema, add a new property "route" to the root
 
-   ```
+   ```json
    "route": {
            "path": "/routing/page1",
            "navigationType": "replace"
    },
    ```
+6. **Store**
+   data.state will change for every new schema. If you want to persist reactive state between schemas, you may use data.store. This can be accessed by events.
+
+   ```json
+   "data": {
+       "state": {
+           "name": "Sumit Man"
+       },
+       "store": {
+           "userId": "123123123"
+       }
+   }
+   ```
+
+   Here name will be lost if schema for the page craft changes, but userId and its changes will always be persisted, unless overriden.
+   **Note:** In the template, one can access store as "{{ store.name }}" and in events you should have state, store and extras in separate parameters
+
+## Breaking Changes
+
+From version 0.2.x
+
+- initialData in schema is now data: { state: {}, store: {}, extra: {} }
+- children at topmost level of the schema is renamed to "schema"
+- props are renamed
+  - reactiveVariables => data
+  - widgetMap => widgets
+  - eventMap => events
+  - route, router, routes => routing
+- need to create routing object
+- page is a v-model:page now
 
 ## Findings
 
@@ -343,6 +381,7 @@ To resolve this we had to create Renderer components which simply return the ref
 
 ## Next
 
-* [ ] Types support in events; arguments as well as reactive variable types
 * [ ] Ability to pass expressions in string as well as in props
-* [ ] Make a better demo
+* [ ] Provide configuration to prevent route schema from getting cached
+* [ ] Have data api calls parallel to the fetchSchema api, so that one is not waiting for the schema to load and then trigger the data api call
+* [ ] Shimmer/Loader component

@@ -2,46 +2,103 @@
     <WidgetsRenderer
         v-if="localPage"
         :key="localPage.id"
-        :widgets="localPage.children"
-        :widgetMap="props.widgetMap"
-        :eventMap="newEventMap"
-        :reactiveVariableMap="newReactiveVariableMap"
+        :schema="localPage.schema"
+        :widgets="props.widgets"
+        :events="newEventMap"
+        :state="newReactiveVariableMap"
+        :store="storeReactiveVariableMap"
     />
 </template>
 <script setup lang="ts">
-import { ref, Ref, ComputedRef, isRef, computed, watch, ShallowRef, shallowRef } from 'vue';
-import { IPage, GenericObject, EventMap, IRouteConfig } from './shared/interfaces';
+import { ref, isRef, computed, watch, ShallowRef, shallowRef } from 'vue';
+import { IPage, GenericObject, EventMap, IPageData, IPageRouting } from './shared/interfaces';
 import WidgetsRenderer from './WidgetsRenderer.vue';
 import { NavigationType } from './shared/enums';
 
 const page = defineModel('page', { type: Object as () => IPage, required: false });
 const props = defineProps({
-    widgetMap: {
+    widgets: {
         type: Object as () => GenericObject,
         default: () => {}
     },
-    eventMap: {
+    events: {
         type: Function as unknown as () => EventMap<any>,
         default: () => {}
     },
-    reactiveVariableMap: {
-        type: Object as () => GenericObject<Ref | ComputedRef>,
-        default: () => {}
+    data: {
+        type: Object as () => IPageData,
+        default: () => ({ state: {}, store: {}, extra: {} })
     },
-    router: {
-        type: Object as () => ({ push: Function; replace: Function; }),
-        required: false
-    },
-    route: {
-        type: Object as () => ({ fullPath: string }),
-        required: false
-    },
-    routes: {
-        type: Array as () => Array<IRouteConfig>,
+    routing: {
+        type: Object as () => IPageRouting,
         required: false
     }
 });
 
+
+// Need to do this if props.page is a ref variable.
+// Ref page would cause page to recursively update itself
+// possible reason is that props.page.initialData is linked, maybe
+const localPage: ShallowRef<IPage | null> = shallowRef(JSON.parse(JSON.stringify(null)));
+
+// Prepare state reactive variables
+// Convert values to refs and merge props data.state with schema state
+// updates when props state or page changes
+const newReactiveVariableMap = computed(() => {
+    if (localPage.value?.data?.state) {
+        Object.keys(localPage.value.data.state).forEach((key) => {
+            if (!localPage.value?.data?.state) {
+                return;
+            }
+            if (!isRef(localPage.value.data.state[key])) {
+                localPage.value.data.state[key] = ref(localPage.value.data.state[key]);
+            }
+        });
+        return {
+            ...localPage.value.data.state,
+            ...(props.data.state ?? {})
+        };
+    }
+    return (props.data.state ?? {});
+});
+
+// Prepare store reactive variables and persist them
+// Convert values to refs and merge props data.store with schema store
+// updates when props store and page changes and persist in the object storeVariableMap
+const storeReactiveVariableMap: GenericObject = {};
+watch(
+    () => [localPage.value, props.data.store],
+    () => {
+        // Add props.data.store to the persistent object
+        if (props.data.store) {
+            Object.keys(props.data.store).forEach((key) => {
+                if (!props.data.store) {
+                    return;
+                }
+                storeReactiveVariableMap[key] = props.data.store[key];
+            });
+        }
+        // Convert schema store values to ref
+        if (localPage.value?.data?.store) {
+            Object.keys(localPage.value.data.store).forEach((key) => {
+                if (!localPage.value?.data?.store) {
+                    return;
+                }
+                if (!isRef(localPage.value.data.store[key])) {
+                    localPage.value.data.store[key] = ref(localPage.value.data.store[key]);
+                }
+                storeReactiveVariableMap[key] = localPage.value.data.store[key];
+            });
+        }
+    }
+);
+
+// Initialize events with data
+const newEventMap = computed(() => {
+    return props.events(newReactiveVariableMap.value, storeReactiveVariableMap, page.value?.data?.extra ?? {});
+});
+
+// ROUTING
 const fallbackCache: GenericObject<IPage> = {};
 // flag which tells that route was changed cause schema triggered it
 // so do not handle route but only reset flag
@@ -50,10 +107,6 @@ let isRouteChangeFromSchema = false;
 // so do not handle schema new schema which was set in v-model but only reset flag
 let isSchemaChangeFromRoute = false;
 
-// Need to do this if props.page is a ref variable.
-// Ref page would cause page to recursively update itself
-// possible reason is that props.page.initialData is linked, maybe
-const localPage: ShallowRef<IPage | null> = shallowRef(JSON.parse(JSON.stringify(null)));
 const schemaRouting = (schema: IPage) => {
     if (isSchemaChangeFromRoute) {
         isSchemaChangeFromRoute = false;
@@ -63,8 +116,7 @@ const schemaRouting = (schema: IPage) => {
     // not needed if route and router objects were not passed or if schema does not demand routing
     if (
         !schema.route?.path
-        || !props.route
-        || !props.router
+        || !props.routing
     ) {
         return;
     }
@@ -78,7 +130,7 @@ const schemaRouting = (schema: IPage) => {
     }
 
     // do not do anything if you are already on the required path
-    if (props.route.fullPath === schema.route.path) {
+    if (props.routing.route.fullPath === schema.route.path) {
         return;
     }
     
@@ -87,10 +139,10 @@ const schemaRouting = (schema: IPage) => {
     // TODO: handle replaceIfFirst
     if (schema.route.navigationType === NavigationType.Replace) {
         // actual browser replace call
-        props.router.replace(schema.route.path);
+        props.routing.router.replace(schema.route.path);
     } else {
         // actual browser push call, creating browser entry
-        props.router.push(schema.route.path);
+        props.routing.router.push(schema.route.path);
     }
 };
 const loadSchema = (schema: IPage) => {
@@ -102,13 +154,13 @@ const loadSchema = (schema: IPage) => {
 // if no-schema event was emitted and we are expecting parent to set a new page schema
 // no-schema is emitted when route changes and a schema does not exist
 const onNoSchemaFound = async () => {
-    if (props.routes?.length && props.route?.fullPath) {
+    if (props.routing?.routes?.length && props.routing?.route?.fullPath) {
         // find route config which matches path
-        const targetRoute = props.routes.find(item => {
+        const targetRoute = props.routing.routes.find(item => {
             if (typeof item.path === 'string') {
-                return props.route?.fullPath === item.path;
+                return props.routing?.route?.fullPath === item.path;
             }
-            return (props.route?.fullPath ?? '').match(item.path)?.length;
+            return (props.routing?.route?.fullPath ?? '').match(item.path)?.length;
         });
         if (targetRoute) {
             targetRoute.beforeNavigate && targetRoute.beforeNavigate();
@@ -121,7 +173,7 @@ const onNoSchemaFound = async () => {
                 }
             } catch(error) {
                 // if there is any issue with fetching schema, find the error route config and run it
-                const errorRoute = props.routes.find(item => item.path === 'error');
+                const errorRoute = props.routing.routes.find(item => item.path === 'error');
                 if (errorRoute) {
                     const errorSchema = await errorRoute.schemaFetch({ code: 'ERROR_IN_FETCH', message: 'There was an issue fetching the required route', error });
                     if (errorSchema) {
@@ -132,7 +184,7 @@ const onNoSchemaFound = async () => {
             }
         } else {
             // if no routes match, find the error route config and run it
-            const errorRoute = props.routes.find(item => item.path === 'error');
+            const errorRoute = props.routing.routes.find(item => item.path === 'error');
             if (errorRoute) {
                 const errorSchema = await errorRoute.schemaFetch({ code: 'ROUTE_NOT_FOUND', message: 'Route not found' });
                 if (errorSchema) {
@@ -157,7 +209,7 @@ watch(
 );
 // watch route changes, if schema is cached then load it
 watch(
-    () => props.route?.fullPath,
+    () => props.routing?.route?.fullPath,
     () => {
         if (isRouteChangeFromSchema) {
             isRouteChangeFromSchema = false;
@@ -165,13 +217,13 @@ watch(
         }
 
         if (
-            !props.route
-            || !props.router
+            !props.routing?.route
+            || !props.routing?.router
         ) {
             return;
         };
 
-        const key = props.route?.fullPath ?? '';
+        const key = props.routing?.route?.fullPath ?? '';
         if (!key)
             return;
         const schemaStr = sessionStorage.getItem(key);
@@ -195,27 +247,6 @@ watch(
         onNoSchemaFound();
     }
 );
-
-const newReactiveVariableMap = computed(() => {
-    if (localPage.value && localPage.value.initialData) {
-        Object.keys(localPage.value.initialData).forEach((key) => {
-            if (!localPage.value?.initialData) {
-                return;
-            }
-            if (!isRef(localPage.value.initialData[key])) {
-                localPage.value.initialData[key] = ref(localPage.value.initialData[key]);
-            }
-        });
-        return {
-            ...localPage.value.initialData,
-            ...props.reactiveVariableMap
-        };
-    }
-    return props.reactiveVariableMap;
-});
-const newEventMap = computed(() => {
-    return props.eventMap(newReactiveVariableMap.value, page.value?.data);
-});
 
 // init code
 // loadSchema is initially done to handle first time routing
