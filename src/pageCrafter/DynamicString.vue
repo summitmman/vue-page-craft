@@ -15,18 +15,18 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    reactiveVariableMap: {
+    state: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     },
-    storeReactiveVariableMap: {
+    store: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     }
 });
 
 const splitStrArr: ComputedRef<Array<string | Ref | ComputedRef>> = computed(() => {
-    const splitStrArrLocal = splitDynamicStr(props.str, props.reactiveVariableMap, props.storeReactiveVariableMap);
+    const splitStrArrLocal = splitDynamicStr(props.str, props.state, props.store);
     return splitStrArrLocal.map(item => {
         if (typeof item === 'string') {
             return item;

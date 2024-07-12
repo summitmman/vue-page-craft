@@ -4,9 +4,9 @@
       <div class="p-15">
         <PageCrafter
           v-model:page="page"
-          :widgetMap="widgetMap"
-          :eventMap="eventMap"
-          :reactiveVariableMap="reactiveVariableMap"
+          :widgets="widgets"
+          :events="events"
+          :data="data"
         />
         <div class="boundary">
           <h2>This section is outside page crafter</h2>
@@ -17,13 +17,6 @@
       </div>
     </template>
     <template v-slot:schema>
-      <!-- <ObjectViewer
-        v-if="jsonData"
-        :object="jsonData"
-        :stateKeys="Object.keys(reactiveVariableMap)"
-        :eventKeys="Object.keys(eventMap)"
-        :componentKeys="Object.keys(widgetMap)"
-      /> -->
       <JsonViewer
         v-if="jsonData"
         :value="jsonData"
@@ -35,17 +28,19 @@
       <pre>
         <code>
 const singleName = ref('Beta');
-const <b>reactiveVariableMap</b> = {
-  singleName,
-  singleNameLength: computed(() => singleName.value.length),
-  cities: ref([
-    {
-      name: 'Mumbai',
-    },
-    {
-      name: 'Bengaluru'
-    }
-  ])
+const <b>data</b>: IPageData = {
+  state: {
+    singleName,
+    singleNameLength: computed(() => singleName.value.length),
+    cities: ref([
+      {
+        name: 'Mumbai',
+      },
+      {
+        name: 'Bengaluru'
+      }
+    ])
+  }
 };
         </code>
       </pre>
@@ -53,16 +48,18 @@ const <b>reactiveVariableMap</b> = {
     <template v-slot:events>
       <pre>
         <code>
-type reactiveVariablesType = typeof reactiveVariableMap & GenericObject &lt; Ref | ComputedRef &gt; ;
-const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+type reactiveVariablesType = typeof data & GenericObject&lt;Ref | ComputedRef&gt;;
+const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVariablesType, store: GenericObject&lt;Ref&gt;, extra: GenericObject): GenericObject&lt;Function&gt; => ({
   handleAppCustomClick: () => {
-    alert(`Hello ${ reactiveVariables.name?.value }`);
+    alert(`Hello ${ state.name?.value }`);
   },
-  handleChange: (val: any) => {
-    console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+  handleChange: (val: string) => {
+    console.log('SUMIT LOG', val, state.surname?.value, store, extra);
+    if (store.userId)
+      store.userId.value = 98989898;
   },
   singleNameLengthFn: () => {
-    return reactiveVariables.singleNameLength.value;
+    return state.singleNameLength.value;
   }
 });
         </code>
@@ -71,7 +68,7 @@ const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVaria
     <template v-slot:component-map>
       <pre>
         <code>
-const <b>widgetMap</b> = {
+const <b>widgets</b> = {
   Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
   Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
 };
@@ -84,43 +81,45 @@ const <b>widgetMap</b> = {
 <script setup lang="ts">
   import { defineAsyncComponent, ref, Ref, ComputedRef, computed } from 'vue';
   import PageCrafter from '../pageCrafter/PageCrafter.vue';
-  import ObjectViewer from '../components/ObjectViewer.vue';
-  import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
+  import { IPage, GenericObject, EventMap, IPageData } from '../pageCrafter/shared/interfaces';
   
-  const jsonData = ref(null);
-  const singleName = ref('Beta');
-  const widgetMap = {
+  const widgets = {
     Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
   };
-  const reactiveVariableMap = {
-    singleName,
-    singleNameLength: computed(() => singleName.value.length),
-    cities: ref([
-      {
-        name: 'Mumbai',
-      },
-      {
-        name: 'Bengaluru'
-      }
-    ])
+  
+  const singleName = ref('Beta');
+  const data: IPageData = {
+    state: {
+      singleName,
+      singleNameLength: computed(() => singleName.value.length),
+      cities: ref([
+        {
+          name: 'Mumbai',
+        },
+        {
+          name: 'Bengaluru'
+        }
+      ])
+    }
   };
-  type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref | ComputedRef>;
-  const eventMap: EventMap<reactiveVariablesType> = (reactiveVariables: reactiveVariablesType, store: GenericObject<Ref>, extra?: GenericObject): GenericObject<Function> => ({
+  type reactiveVariablesType = typeof data & GenericObject<Ref | ComputedRef>;
+  const events: EventMap<reactiveVariablesType> = (state: reactiveVariablesType, store: GenericObject<Ref>, extra: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
-      alert(`Hello ${ reactiveVariables.name?.value }`);
+      alert(`Hello ${ state.name?.value }`);
     },
     handleChange: (val: string) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value, store, extra);
+      console.log('SUMIT LOG', val, state.surname?.value, store, extra);
       if (store.userId)
         store.userId.value = 98989898;
     },
     singleNameLengthFn: () => {
-      return reactiveVariables.singleNameLength.value;
+      return state.singleNameLength.value;
     }
   });
   
   const page: Ref<IPage | null> = ref(null);
+  const jsonData = ref(null);
   fetch(`${import.meta.env.BASE_URL}/mocks/native.json`).then(response => response.json()).then(response => {
     jsonData.value = JSON.parse(JSON.stringify(response));
     page.value = response;

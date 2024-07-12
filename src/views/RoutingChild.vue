@@ -4,11 +4,9 @@
         <div class="p-15">
           <PageCrafter
             v-model:page="page"
-            :eventMap="eventMap"
-            :reactiveVariableMap="reactiveVariableMap"
-            :route="route"
-            :router="router"
-            :routes="routes"
+            :events="events"
+            :data="data"
+            :routing="routing"
           />
         </div>
       </template>
@@ -24,32 +22,43 @@
       <template v-slot:state>
         <pre>
           <code>
-  const <b>reactiveVariableMap</b> = {};
+const <b>data</b> = {};
           </code>
         </pre>
       </template>
       <template v-slot:events>
         <pre>
           <code>
-  type reactiveVariablesType = typeof reactiveVariableMap & GenericObject &lt; Ref | ComputedRef &gt; ;
-  const <b>eventMap:</b> EventMap &lt; reactiveVariablesType &gt; = (reactiveVariables: reactiveVariablesType): GenericObject &lt; Function &gt; => ({
-    routeToPage2: () => {
-      getSchemaFor('page2');
-    },
-    routeToPage3: () => {
-      router.push('/routing/page3');
-    },
-    routeBack: () => {
-      router.back();
+type reactiveVariablesType = typeof data & GenericObject&lt;Ref&gt;;
+const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVariablesType, store: GenericObject&lt;Ref&gt;): GenericObject&lt;Function&gt; => ({
+  routeToPage2: async () => {
+    const response = await getSchemaFor('page2');
+    jsonData.value = JSON.parse(JSON.stringify(response));
+    page.value = response;
+  },
+  routeToPage3: () => {
+    router.push('/routing/page3');
+  },
+  routeBack: () => {
+    router.back();
+  },
+  changeStateStore: () => {
+    if (store.userId) {
+      store.userId.value = 9898989898;
     }
-  });
+    if (state.name) {
+      state.name.value = 'Vinita Koyilot';
+    }
+    console.log('store', store);
+  }
+});
           </code>
         </pre>
       </template>
       <template v-slot:component-map>
         <pre>
           <code>
-  const <b>widgetMap</b> = {};
+  const <b>widgets</b> = {};
           </code>
         </pre>
       </template>
@@ -57,7 +66,7 @@
   </template>
     
   <script setup lang="ts">
-    import { ref, Ref, ComputedRef } from 'vue';
+    import { ref, Ref } from 'vue';
     import PageCrafter from '../pageCrafter/PageCrafter.vue';
     import { IPage, GenericObject, EventMap, IRouteConfig } from '../pageCrafter/shared/interfaces';
     import { useRouter, useRoute } from 'vue-router';
@@ -73,10 +82,10 @@
       return fetch(`${import.meta.env.BASE_URL}/mocks/${pageName}.json`).then(response => response.json());
     };
 
-    const reactiveVariableMap = {};
-    type reactiveVariablesType = typeof reactiveVariableMap & GenericObject<Ref>;
+    const data = {};
     
-    const eventMap: EventMap<reactiveVariablesType> = (state: reactiveVariablesType, store: GenericObject<Ref>): GenericObject<Function> => ({
+    type reactiveVariablesType = typeof data & GenericObject<Ref>;
+    const events: EventMap<reactiveVariablesType> = (state: reactiveVariablesType, store: GenericObject<Ref>): GenericObject<Function> => ({
       routeToPage2: async () => {
         const response = await getSchemaFor('page2');
         jsonData.value = JSON.parse(JSON.stringify(response));
@@ -119,7 +128,7 @@
           console.log(err);
           return Promise.resolve({
             id: 'error-page',
-            children: [
+            schema: [
               {
                 type: 'h1',
                 children: [
@@ -131,6 +140,12 @@
         }
       }
     ];
+
+    const routing = {
+      route,
+      router,
+      routes
+    };
     
   </script>
     

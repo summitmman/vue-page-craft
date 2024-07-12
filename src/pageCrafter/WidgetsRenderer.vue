@@ -1,46 +1,46 @@
 <template>
     <template
-        v-for="(widget, index) in props.widgets"
-        :key="(typeof widget === 'string' ? widget : widget.id + widget.type) + index"
+        v-for="(schemaItem, index) in props.schema"
+        :key="(typeof schemaItem === 'string' ? schemaItem : schemaItem.id + schemaItem.type) + index"
     >
-        <DynamicString v-if="typeof widget === 'string'" :str="widget" :reactiveVariableMap="props.reactiveVariableMap" :storeReactiveVariableMap="props.storeReactiveVariableMap" />
-        <WidgetRenderer v-else :widget="widget" :widgetMap="localWidgetMap" :eventMap="props.eventMap" :reactiveVariableMap="props.reactiveVariableMap" :storeReactiveVariableMap="props.storeReactiveVariableMap" />
+        <DynamicString v-if="typeof schemaItem === 'string'" :str="schemaItem" :state="props.state" :store="props.store" />
+        <WidgetRenderer v-else :schema="schemaItem" :widgets="localWidgetMap" :events="props.events" :state="props.state" :store="props.store" />
     </template>
 </template>
 <script setup lang="ts">
-import { ComputedRef, Ref, computed, defineAsyncComponent, isRef } from 'vue';
+import { ComputedRef, Ref, computed, defineAsyncComponent } from 'vue';
 import { Widgets, GenericObject } from './shared/interfaces';
-import WidgetRenderer from './WidgetRenderer.vue';
 
+const WidgetRenderer = defineAsyncComponent(() => import(/* webpackChunkName: "VFor" */ './WidgetRenderer.vue'));
 const DynamicString = defineAsyncComponent(() => import(/* webpackChunkName: "DynamicString" */ './DynamicString.vue'));
 const VIf = defineAsyncComponent(() => import(/* webpackChunkName: "VIf" */ './components/VIf.vue'));
 const VFor = defineAsyncComponent(() => import(/* webpackChunkName: "VFor" */ './components/VFor.vue'));
 
 const props = defineProps({
-    widgets: {
+    schema: {
         type: Array as () => Widgets<string | Function>,
         default: () => [],
     },
-    widgetMap: {
+    widgets: {
         type: Object as () => GenericObject,
         default: () => {}
     },
-    eventMap: {
+    events: {
         type: Object as () => GenericObject<Function>,
         default: () => {}
     },
-    reactiveVariableMap: {
+    state: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     },
-    storeReactiveVariableMap: {
+    store: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     }
 });
 
 const localWidgetMap = computed(() => ({
-    ...props.widgetMap,
+    ...props.widgets,
     'v-if': VIf,
     'v-for': VFor,
 }));

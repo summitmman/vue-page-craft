@@ -2,11 +2,11 @@
     <WidgetsRenderer
         v-for="(item, index) in props.loopOn"
         :key="props.id + 'item' + index"
-        :widgets="getNewLoopChildren()"
-        :widgetMap="props.widgetMap"
-        :eventMap="props.eventMap"
-        :reactiveVariableMap="{ ...props.reactiveVariableMap, [props.id + 'Item']: item, [props.id + 'Index']: index }"
-        :storeReactiveVariableMap="storeReactiveVariableMap"
+        :schema="getNewLoopChildren()"
+        :widgets="props.widgets"
+        :events="props.events"
+        :state="{ ...props.state, [props.id + 'Item']: item, [props.id + 'Index']: index }"
+        :store="props.store"
     />
 </template>
 <script setup lang="ts">
@@ -28,19 +28,19 @@ const props = defineProps({
         type: Array as () => Widgets<string | Function>,
         default: () => []
     },
-    widgetMap: {
+    widgets: {
         type: Object as () => GenericObject,
         default: () => {}
     },
-    eventMap: {
+    events: {
         type: Object as () => GenericObject<Function>,
         default: () => {}
     },
-    reactiveVariableMap: {
+    state: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     },
-    storeReactiveVariableMap: {
+    store: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
     }

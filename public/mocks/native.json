@@ -1,6 +1,6 @@
 {
     "id": "sample-page",
-    "dataz": {
+    "data": {
         "state": {
             "name": "Sumit",
             "surname": "Man",
@@ -29,7 +29,7 @@
             "userId": "12341234"
         }
     },
-    "children": [
+    "schema": [
         {
             "type": "div",
             "children": [

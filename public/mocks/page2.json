@@ -4,7 +4,7 @@
         "path": "/routing/page2",
         "navigationType": "push"
     },
-    "dataz": {
+    "data": {
         "state": {
             "name": "Sumit Man"
         },
@@ -12,7 +12,7 @@
             "phone": "8708939494"
         }
     },
-    "children": [
+    "schema": [
         {
             "type": "div",
             "children": [

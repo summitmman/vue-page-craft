@@ -20,9 +20,9 @@ export const getVariableAndParts = (variableStr: string): IVariableParts => {
 
 export const splitDynamicStr = (
     value: string,
-    reactiveVariableMap: GenericObject<Ref | ComputedRef>,
-    storeReactiveVariableMap: GenericObject<Ref | ComputedRef> = {},
-    eventMap: GenericObject<Function> = {}
+    state: GenericObject<Ref | ComputedRef>,
+    store: GenericObject<Ref | ComputedRef> = {},
+    events: GenericObject<Function> = {}
 ): DynamicStringSplit => {
     let tempStr = value;
     const splitStrArr: DynamicStringSplit = [];
@@ -47,18 +47,18 @@ export const splitDynamicStr = (
             isStoreVariable = true;
         }
         const { variablePart, theRest } = getVariableAndParts(variableStr);
-        if (isStoreVariable && storeReactiveVariableMap[variablePart] != null) {
+        if (isStoreVariable && store[variablePart] != null) {
             splitStrArr.push({
-                rVar: storeReactiveVariableMap[variablePart],
+                rVar: store[variablePart],
                 theRest
             });
-        } else if (reactiveVariableMap[variablePart] != null) {
+        } else if (state[variablePart] != null) {
             splitStrArr.push({
-                rVar: reactiveVariableMap[variablePart],
+                rVar: state[variablePart],
                 theRest
             });
-        } else if (eventMap[variablePart] != null) {
-            splitStrArr.push(eventMap[variablePart]);
+        } else if (events[variablePart] != null) {
+            splitStrArr.push(events[variablePart]);
         } else {
             splitStrArr.push(match[0]);
         }

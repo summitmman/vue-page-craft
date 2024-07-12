@@ -2,12 +2,10 @@
     <div>
       <PageCrafter
         v-model:page="currentPage"
-        :widgetMap="widgetMap"
-        :eventMap="eventMap"
-        :reactiveVariableMap="reactiveVariableMap"
-        :route="route"
-        :router="router"
-        :routes="routes"
+        :widgets="widgets"
+        :events="events"
+        :data="data"
+        :routing="routing"
       />
       <div>
         Outside page crafter
@@ -28,22 +26,24 @@
   const router = useRouter();
   
   const singleName = ref('optical fiber');
-  const widgetMap = {
+  const widgets = {
     Button: defineAsyncComponent(() => import(/* webpackChunkName: "Button" */ '../components/Button.vue')),
     Name: defineAsyncComponent(() => import(/* webpackChunkName: "Name" */ '../components/Name.vue'))
   };
   
   const page: IPage = {
     id: 'sample-page',
-    initialData: {
-      name: 'Hello',
-      surname: 'World'
+    data: {
+      state: {
+        name: 'Hello',
+        surname: 'World'
+      }
     },
     route: {
         path: '/path1',
         navigationType: NavigationType.Replace
     },
-    children: [
+    schema: [
       {
         type: 'div',
         props: {
@@ -204,7 +204,7 @@
       path: '/path2',
       navigationType: NavigationType.Push
     },
-    children: [
+    schema: [
       {
         type: 'h1',
         children: [
@@ -229,7 +229,7 @@
       path: '/path3',
       navigationType: NavigationType.Push
     },
-    children: [
+    schema: [
       {
         type: 'h1',
         children: [
@@ -239,18 +239,18 @@
     ]
   };
   const currentPage = ref(page);
-  const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+  const events: EventMap = (state: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
     handleAppClick: () => {
       alert('Hello World');
     },
     handleAppCustomClick: () => {
-      alert(`custom button alert ${ reactiveVariables.name?.value }`);
+      alert(`custom button alert ${ state.name?.value }`);
     },
     handleChange: (val: any) => {
-      console.log('SUMIT LOG', val, reactiveVariables.surname?.value);
+      console.log('SUMIT LOG', val, state.surname?.value);
     },
     singleNameLengthFn: () => {
-      return reactiveVariables.singleNameLength?.value;
+      return state.singleNameLength?.value;
     },
     onSubmit: () => {
       currentPage.value = page2;
@@ -259,17 +259,19 @@
       currentPage.value = page3;
     }
   });
-  const reactiveVariableMap = {
-    singleName,
-    singleNameLength: computed(() => singleName.value.length),
-    cities: ref([
-      {
-        name: 'Mumbai',
-      },
-      {
-        name: 'Bengaluru'
-      }
-    ])
+  const data = {
+    state: {
+      singleName,
+      singleNameLength: computed(() => singleName.value.length),
+      cities: ref([
+        {
+          name: 'Mumbai',
+        },
+        {
+          name: 'Bengaluru'
+        }
+      ])
+    }
   };
   const routes: Array<IRouteConfig> = [
     {
@@ -295,7 +297,7 @@
       schemaFetch: () => {
         return Promise.resolve({
           id: 'error-page',
-          children: [
+          schema: [
             {
               type: 'h1',
               children: [
@@ -307,6 +309,11 @@
       }
     }
   ];
+  const routing = {
+    route,
+    router,
+    routes
+  };
   </script>
   
   <style>

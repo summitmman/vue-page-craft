@@ -1,6 +1,6 @@
 {
     "id": "sample-page",
-    "dataz": {
+    "data": {
         "state": {
             "name": "Sumit",
             "benefits": [
@@ -31,7 +31,7 @@
             "city": null
         }
     },
-    "children": [
+    "schema": [
         {
             "type": "v-container",
             "children": [

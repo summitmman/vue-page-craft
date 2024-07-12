@@ -4,7 +4,7 @@
         "path": "/routing/page1",
         "navigationType": "replace"
     },
-    "dataz": {
+    "data": {
         "state": {
             "name": "Sumit Man"
         },
@@ -12,7 +12,7 @@
             "userId": "123123123"
         }
     },
-    "children": [
+    "schema": [
         {
             "type": "div",
             "children": [
@@ -117,7 +117,7 @@
                                 "style": "width: 100%; padding: 10px"
                             },
                             "events": {
-                                "click": "routeToPage2"
+                                "click": "{{ routeToPage2 }}"
                             },
                             "children": [
                                 "Go to page 2"

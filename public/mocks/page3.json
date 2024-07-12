@@ -4,7 +4,7 @@
         "path": "/routing/page3",
         "navigationType": "push"
     },
-    "children": [
+    "schema": [
         {
             "type": "div",
             "children": [

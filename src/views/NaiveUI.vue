@@ -2,11 +2,10 @@
   <Layout>
     <template v-slot:demo>
       <PageCrafter
-        v-if="page"
-        :page="page"
-        :widgetMap="widgetMap"
-        :eventMap="eventMap"
-        :reactiveVariableMap="reactiveVariableMap"
+        v-model:page="page"
+        :widgets="widgets"
+        :events="events"
+        :data="data"
       />
     </template>
     <template v-slot:schema>
@@ -21,9 +20,11 @@
       <pre>
         <code>
 const name = ref('Sumit');
-const <b>reactiveVariableMap</b> = {
-  name,
-  nameHint: computed(() => `You have entered: ${name.value}`),
+const <b>data</b>: IPageData = {
+  state: {
+    name,
+    nameHint: computed(() => `You have entered: ${name.value}`)
+  }
 };
         </code>
       </pre>
@@ -31,10 +32,10 @@ const <b>reactiveVariableMap</b> = {
     <template v-slot:events>
       <pre>
         <code>
-const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | ComputedRef &gt; ): GenericObject &lt; Function &gt; => ({
+const <b>events:</b> EventMap = (state: GenericObject &lt;Ref | ComputedRef&gt;): GenericObject &lt;Function&gt; => ({
   sayHi: () => {
-    alert(`Hi ${reactiveVariables.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
-    reactiveVariables.benefits?.value.push({
+    alert(`Hi ${state.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
+    state.benefits?.value.push({
       title: 'New Benefit',
       subtitle: 'Get rewards for new benefit',
       icon: `${import.meta.env.BASE_URL}/img/diamond.png`
@@ -47,7 +48,7 @@ const <b>eventMap:</b> EventMap = (reactiveVariables: GenericObject &lt; Ref | C
     <template v-slot:component-map>
       <pre>
         <code>
-const <b>widgetMap</b> = {
+const <b>widgets</b> = {
   NButton,
   NCard,
   NCollapse,
@@ -68,7 +69,7 @@ const <b>widgetMap</b> = {
 <script setup lang="ts">
 import { ref, Ref, ComputedRef, computed } from 'vue';
 import PageCrafter from '../pageCrafter/PageCrafter.vue';
-import { IPage, GenericObject, EventMap } from '../pageCrafter/shared/interfaces';
+import { IPage, GenericObject, EventMap, IPageData } from '../pageCrafter/shared/interfaces';
 import {
   NButton,
   NCard,
@@ -85,7 +86,7 @@ import {
 const jsonData = ref(null);
 
 // Define here or globally
-const widgetMap = {
+const widgets = {
   NButton,
   NCard,
   NCollapse,
@@ -98,10 +99,10 @@ const widgetMap = {
   NSpace
 };
 
-const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+const events: EventMap = (state: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
   sayHi: () => {
-    alert(`Hi ${reactiveVariables.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
-    reactiveVariables.benefits?.value.push({
+    alert(`Hi ${state.name?.value}!!!. This click also adds a dummy benefit "New Benefit"`);
+    state.benefits?.value.push({
       title: 'New Benefit',
       subtitle: 'Get rewards for new benefit',
       icon: `${import.meta.env.BASE_URL}/img/diamond.png`
@@ -110,9 +111,11 @@ const eventMap: EventMap = (reactiveVariables: GenericObject<Ref | ComputedRef>)
 });
 
 const name = ref('Sumit');
-const reactiveVariableMap = {
-  name,
-  nameHint: computed(() => `You have entered: ${name.value}`)
+const data: IPageData = {
+  state: {
+    name,
+    nameHint: computed(() => `You have entered: ${name.value}`)
+  }
 };
 const page: Ref<IPage | null> = ref(null);
 fetch(`${import.meta.env.BASE_URL}/mocks/naiveui.json`).then(response => response.json()).then(response => {
