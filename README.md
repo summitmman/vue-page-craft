@@ -357,7 +357,7 @@ const events: EventMap = (state: GenericObject<Ref | ComputedRef>, store: Generi
    ```
 
    Here name will be lost if schema for the page craft changes, but userId and its changes will always be persisted, unless overriden.
-   **Note:** In the template, one can access store as "{{ store.name }}"
+   **Note:** In the template, one can access store as "{{ store.name }}" and in events you should have state, store and extras in separate parameters
 
 ## Breaking Changes
 
