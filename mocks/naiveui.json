@@ -1,54 +1,57 @@
 {
     "id": "sample-page",
-    "initialData": {
-        "name": "Sumit",
-        "benefits": [
-            {
-                "title": "Get Rewards",
-                "subtitle": "Get rewards for every commit that you make",
-                "icon": "/vue-page-craft/img/diamond.png"
-            },
-            {
-                "title": "Get Knowledge",
-                "subtitle": "Professionals will peer review your code and help you learn",
-                "icon": "/vue-page-craft/img/deep-learning.png"
-            },
-            {
-                "title": "Build AI",
-                "subtitle": "Finally build AI bots which will help rule the world",
-                "icon": "/vue-page-craft/img/robotics.png"
-            }
-        ],
-        "cities": [
-            {
-                "label": "California",
-                "value": "California"
-            },
-            {
-                "label": "Colorado",
-                "value": "Colorado"
-            },
-            {
-                "label": "Florida",
-                "value": "Florida"
-            },
-            {
-                "label": "Georgia",
-                "value": "Georgia"
-            },
-            {
-                "label": "Texas",
-                "value": "Texas"
-            },
-            {
-                "label": "Wyoming",
-                "value": "Wyoming"
-            }
-        ],
-        "city": null,
-        "activeIndex": 0
+    "data": {
+        "state": {
+            "name": "Sumit",
+            "benefits": [
+                {
+                    "title": "Get Rewards",
+                    "subtitle": "Get rewards for every commit that you make",
+                    "icon": "/vue-page-craft/img/diamond.png"
+                },
+                {
+                    "title": "Get Knowledge",
+                    "subtitle": "Professionals will peer review your code and help you learn",
+                    "icon": "/vue-page-craft/img/deep-learning.png"
+                },
+                {
+                    "title": "Build AI",
+                    "subtitle": "Finally build AI bots which will help rule the world",
+                    "icon": "/vue-page-craft/img/robotics.png"
+                }
+            ],
+            "cities": [
+                {
+                    "label": "California",
+                    "value": "California"
+                },
+                {
+                    "label": "Colorado",
+                    "value": "Colorado"
+                },
+                {
+                    "label": "Florida",
+                    "value": "Florida"
+                },
+                {
+                    "label": "Georgia",
+                    "value": "Georgia"
+                },
+                {
+                    "label": "Texas",
+                    "value": "Texas"
+                },
+                {
+                    "label": "Wyoming",
+                    "value": "Wyoming"
+                }
+            ],
+            "city": null,
+            "activeIndex": 0
+        }
+        
     },
-    "children": [
+    "schema": [
         {
             "type": "div",
             "props": {

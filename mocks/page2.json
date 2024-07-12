@@ -4,7 +4,15 @@
         "path": "/routing/page2",
         "navigationType": "push"
     },
-    "children": [
+    "data": {
+        "state": {
+            "name": "Sumit Man"
+        },
+        "store": {
+            "phone": "8708939494"
+        }
+    },
+    "schema": [
         {
             "type": "div",
             "children": [
@@ -21,6 +29,24 @@
                     "type": "p",
                     "children": [
                         "As you see, the new schema for page 2 is loaded which has the new routing path and it has got updated in the url. To go back to page 1 from here you may use browser back. The schema for page 1 is cached so loading the page will be quick."
+                    ]
+                },
+                {
+                    "type": "p",
+                    "children": [
+                        "State value name is {{ name }}; but Store value userId is {{ store.userId }}",
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn mt-10 block"
+                            },
+                            "events": {
+                                "click": "changeStateStore"
+                            },
+                            "children": [
+                                "Change state and store"
+                            ]
+                        }
                     ]
                 },
                 {
