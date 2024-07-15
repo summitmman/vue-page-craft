@@ -155,6 +155,28 @@
               'This text only shows when singleNameLength: {{ singleNameLength }} is a valid',
             ]
           },
+          {
+            type: 'v-if',
+            props: {
+              condition: '{{ delayedVariable }}',
+              vElseChildren: [
+                {
+                  type: 'div',
+                  children: [
+                    'This shows if delayedVariable does not exist {{ delayedVariable }}. Click on "Custom button" above to populate delayedVariable'
+                  ]
+                }
+              ]
+            },
+            children: [
+              {
+                type: 'div',
+                children: [
+                  'This shows if delayedVariable exists {{ delayedVariable }}'
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -239,12 +261,18 @@
     ]
   };
   const currentPage = ref(page);
-  const events: EventMap = (state: GenericObject<Ref | ComputedRef>): GenericObject<Function> => ({
+  const events: EventMap = (state: GenericObject<Ref>, store: GenericObject<Ref>): GenericObject<Function> => ({
     handleAppClick: () => {
       alert('Hello World');
     },
     handleAppCustomClick: () => {
       alert(`custom button alert ${ state.name?.value }`);
+      if (state.delayedVariable != null) {
+        state.delayedVariable.value = 'delayedValue';
+      }
+      if (store.delayedVariable != null) {
+        store.delayedVariable.value = 'delayedValue';
+      }
     },
     handleChange: (val: any) => {
       console.log('SUMIT LOG', val, state.surname?.value);

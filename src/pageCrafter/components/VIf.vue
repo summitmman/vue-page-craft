@@ -20,7 +20,7 @@ const WidgetsRenderer = defineAsyncComponent(() => import(/* webpackChunkName: "
 const props = defineProps({
     condition: {
         type: [String, Number, Boolean, Object, Function],
-        required: true
+        required: false
     },
     vElseChildren: {
         type: Array as () => Widgets<string | Function>,
