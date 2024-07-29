@@ -25,12 +25,15 @@ const routes = [
                 name: 'routing',
                 component: () => import('../views/RoutingChild.vue'),
             },
+            // separate business logic events for specific routes
+            // NOTE: These are custom implementation and has no standard way. You may implement your own logic
             {
                 path: '/routing/page1',
+                // prop will be passed through beforeEnter
                 props: (route: any) => ({ eventsByRoute: route.meta.eventsByRoute }),
+                // before entering the route, fetch the business logic layer
                 beforeEnter: (to: any, from: any, next: any) => {
                     import('../bl/page1Events').then(data => {
-                        console.log('SUMIT LOG', 'data 1', data, to);
                         to.meta.eventsByRoute = data.events;
                         next();
                     });
@@ -39,16 +42,18 @@ const routes = [
             },
             {
                 path: '/routing/page2',
+                // prop will be passed through beforeEnter
                 props: (route: any) => ({ eventsByRoute: route.meta.eventsByRoute }),
+                // before entering the route, fetch the business logic layer
                 beforeEnter: (to: any, from: any, next: any) => {
                     import('../bl/page2Events').then(data => {
-                        console.log('SUMIT LOG', 'data 2', data, to);
                         to.meta.eventsByRoute = data.events;
                         next();
                     });
                 },
                 component: () => import('../views/RoutingChild.vue')
             },
+            // default route
             {
                 path: '/routing/:pathMatch(.*)',
                 component: () => import('../views/RoutingChild.vue'),

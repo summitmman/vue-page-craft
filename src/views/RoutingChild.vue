@@ -71,12 +71,7 @@ const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVar
     import { IPage, GenericObject, EventMap, IRouteConfig } from '../pageCrafter/shared/interfaces';
     import { useRouter, useRoute } from 'vue-router';
     
-    const route = useRoute();
-    const router = useRouter();
-
-    const jsonData = ref(null);
-    const page: Ref<IPage | null> = ref(null);
-    
+    // props, which will receive business logic events through the router where it is imported
     const props = defineProps({
       eventsByRoute: {
         type: Function,
@@ -85,26 +80,36 @@ const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVar
       }
     });
     
+    // utils
+    const route = useRoute();
+    const router = useRouter();
     // api to fetch schema
     const getSchemaFor = (pageName: string) => {
       return fetch(`${import.meta.env.BASE_URL}/mocks/${pageName}.json`).then(response => response.json());
     };
 
+    // schema and data
+    const jsonData = ref(null);
+    const page: Ref<IPage | undefined> = ref();
     const data = {};
-    
+
+    // events
     type reactiveVariablesType = typeof data & GenericObject<Ref>;
     // events is computed because we need to recalculate the function to add page level functions
     const events: ComputedRef<EventMap<reactiveVariablesType>> = computed(() => {
       return (state: reactiveVariablesType, store: GenericObject<Ref>): GenericObject<Function> => ({
-      // page functions
-      ...((props.eventsByRoute && props.eventsByRoute({getSchemaFor, jsonData, page, store, state, router})) ?? {}),
-      // default functions
-      routeBack: () => {
-        router.back();
-      },
-    })
-  });
+      
+        // business logic page functions
+        ...((props.eventsByRoute && props.eventsByRoute({getSchemaFor, jsonData, page, store, state, router})) ?? {}),
+      
+        // default functions
+        routeBack: () => {
+          router.back();
+        },
+      })
+    });
     
+    // routes which will be handled by page builder
     const routes: Array<IRouteConfig> = [
       {
         path: new RegExp(/\/routing\/*.*/gm),
