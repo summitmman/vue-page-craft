@@ -32,7 +32,7 @@ const routes = [
                 // prop will be passed through beforeEnter
                 props: (route: any) => ({ eventsByRoute: route.meta.eventsByRoute }),
                 // before entering the route, fetch the business logic layer
-                beforeEnter: (to: any, from: any, next: any) => {
+                beforeEnter: (to: any, _from: any, next: any) => {
                     import('../bl/page1Events').then(data => {
                         to.meta.eventsByRoute = data.events;
                         next();
@@ -45,7 +45,7 @@ const routes = [
                 // prop will be passed through beforeEnter
                 props: (route: any) => ({ eventsByRoute: route.meta.eventsByRoute }),
                 // before entering the route, fetch the business logic layer
-                beforeEnter: (to: any, from: any, next: any) => {
+                beforeEnter: (to: any, _from: any, next: any) => {
                     import('../bl/page2Events').then(data => {
                         to.meta.eventsByRoute = data.events;
                         next();
