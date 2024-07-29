@@ -108,6 +108,12 @@
                     ]
                 },
                 {
+                    "type": "p",
+                    "children": [
+                        "Also, javascript files containing events of this page are fetched only when we land on this route."
+                    ]
+                },
+                {
                     "type": "div",
                     "children": [
                         {
