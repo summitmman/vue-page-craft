@@ -12,11 +12,17 @@
         <input type="text" class="random-native-input block" v-model="singleName" />
         {{ singleName }}
       </div>
+      <div>
+        Template test
+        <input type="text" class="random-native-input block" v-model="temp" />
+        World <span ref="tempRender"></span>
+        <button class="native-btn" @click="handleQuantityClick">Increment quantity</button>
+      </div>
     </div>
   </template>
   
   <script setup lang="ts">
-  import { defineAsyncComponent, ref, Ref, ComputedRef, computed } from 'vue';
+  import { defineAsyncComponent, ref, Ref, ComputedRef, computed, watch, createApp, compile } from 'vue';
   import PageCrafter from '../pageCrafter/PageCrafter.vue';
   import { IPage, GenericObject, EventMap, IRouteConfig } from '../pageCrafter/shared/interfaces';
   import { NavigationType } from '../pageCrafter/shared/enums';
@@ -341,6 +347,32 @@
     route,
     router,
     routes
+  };
+
+  const temp = ref<string>('');
+  const tempRender = ref<any>(null);
+  const quantity = ref<number>(10);
+  const compiled = compile('Hello {{ singleName }}');
+  let currentVueInstance: any = null;
+  watch(temp, () => {
+    if (currentVueInstance && currentVueInstance.unmount) {
+      currentVueInstance.unmount();
+    }
+    currentVueInstance = createApp({
+      render: compile(temp.value),
+      setup() {
+        return {
+          singleName,
+          quantity
+        }
+      }
+    })
+    currentVueInstance.mount(tempRender.value);
+  });
+  
+  const handleQuantityClick = () => {
+    quantity.value = quantity.value + 7;
+    console.log('quantity changed');
   };
   </script>
   

@@ -141,7 +141,7 @@
                                     },
                                     "slots": {
                                         "header-extra": [
-                                            "This is {{ header-extraSlotProps.collapsed }}"
+                                            "This is {{ headerextraSlotProps.collapsed }}"
                                         ]
                                     },
                                     "children": [

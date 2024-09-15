@@ -9,7 +9,7 @@
                 :schema="JSON.parse(JSON.stringify((props.schema.slots ?? {})[slotName]))"
                 :widgets="props.widgets"
                 :events="props.events"
-                :state="{ ...props.state, [props.schema.props?.id ?? '' + slotName + 'SlotProps']: slotProps }"
+                :state="{ ...props.state, [props.schema.props?.id ?? '' + slotName.replace('-', '') + 'SlotProps']: slotProps }"
                 :store="props.store"
             />
         </template>
