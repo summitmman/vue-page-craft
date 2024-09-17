@@ -1,4 +1,4 @@
-import{d as V,r as g,c as k,o as v,a as h,w as s,aW as j,aX as w,b as m,e as n,f as B,a1 as x,i as O,p as C,k as F,h as t,l as I}from"./index-cvbqdxui.js";import{_ as J}from"./PageCrafter.vue_vue_type_script_setup_true_lang-BeDBuIlF.js";const l=o=>(C("data-v-88a0bfbb"),o=o(),F(),o),T={class:"p-15"},P=l(()=>n("pre",null,[t("          "),n("code",null,[t(`
+import{d as V,r as g,c as k,o as v,a as h,w as s,aW as j,aX as w,b as m,e as n,f as B,a1 as x,i as O,p as C,k as F,h as t,l as I}from"./index-BCaH7Z-I.js";import{_ as J}from"./PageCrafter.vue_vue_type_script_setup_true_lang-D5bbMPvx.js";const l=o=>(C("data-v-88a0bfbb"),o=o(),F(),o),T={class:"p-15"},P=l(()=>n("pre",null,[t("          "),n("code",null,[t(`
 const `),n("b",null,"data"),t(` = {};
           `)]),t(`
         `)],-1)),D=l(()=>n("pre",null,[t("          "),n("code",null,[t(`

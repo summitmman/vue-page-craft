@@ -1,1 +1,0 @@
-import{d as e,o as a,aU as o,f as t,a1 as s,e as n,aV as r}from"./index-cvbqdxui.js";const c=n("h2",{class:"ml-15 absolute"},"Routing example",-1),m=e({__name:"Routing",setup(l){return(u,_)=>(a(),o("div",null,[c,t(s(r))]))}});export{m as default};
