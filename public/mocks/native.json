@@ -201,7 +201,7 @@
                             }
                         },
                         "From outside the custom textbox component we get the name \"{{ name }}\" surname \"{{ surname }}\"",
-                        "This data is from the store \"{{ store.userId }}\"",
+                        "This data is from the store \"{{ userId }}\"",
                         {
                             "type": "br"
                         },
@@ -264,7 +264,7 @@
                                 ]
                             },
                             "children": [
-                                "This text only shows when Single Name/Pet Name length : \"{{ singleNameLength }}\" is a valid"
+                                "This text only shows when Single Name/Pet Name length : \"{{ singleName.length }}\" is a valid"
                             ]
                         }
                     ]

@@ -50,7 +50,17 @@ https://summitmman.github.io/vue-page-craft/
 npm install vue-page-craft
 ```
 
-2. In main.ts
+2. In vite.config.ts // this is required for string interpolation
+
+```typescript
+import vuePageCraftVitePlugin from 'vue-page-craft/plugin';
+
+export default defineConfig({
+    plugins: [vue(), vuePageCraftVitePlugin()],
+})
+```
+
+3. In main.ts
 
 ```typescript
 import PageCrafter from 'vue-page-craft';
@@ -88,7 +98,9 @@ const page: IPage = {
                         click: 'handleAppCustomClick' // This is a function name which should exist in eventMap below
                     },
                     children: [
-                        'Custom button to say Hi {{ singleName }}' // reactive variable which should exist in reactiveVariableMap below
+                        'Custom button to say Hi {{ singleName }}', // reactive variable which should exist in reactiveVariableMap below
+			'Let\'s print length of singleName {{ singleName.length }}' // You may also have expressions in template like vue
+			// NOTE: This is only supported in children template and not props. Working on that :thumbsup:
                     ]
                 }
             ]
@@ -252,7 +264,7 @@ const events: EventMap = (state: GenericObject<Ref | ComputedRef>, store: Generi
                     "slotProps "
                 ]
             },
-            "'{{ footerSlotProps.message }}'" // access to slotProps nomenclature "<slot name>SlotProps"
+            "'{{ footerSlotProps.message }}'" // access to slotProps nomenclature "<slot name containing only a-z A-Z 0-9 _ and $>SlotProps"
         ]
     }
 },
@@ -381,7 +393,8 @@ To resolve this we had to create Renderer components which simply return the ref
 
 ## Next
 
-* [ ] Ability to pass expressions in string as well as in props
+* [X] Ability to pass expressions in string
+* [ ] Ability to pass expressions in props
 * [ ] Provide configuration to prevent route schema from getting cached
 * [ ] Have data api calls parallel to the fetchSchema api, so that one is not waiting for the schema to load and then trigger the data api call
 * [ ] Shimmer/Loader component

@@ -10,17 +10,30 @@ export default defineConfig(({ command, mode }) => {
     return {
       base: env.BASE_URL,
       plugins: [vue()],
+      resolve: {
+        alias: {
+          'vue': 'vue/dist/vue.esm-bundler.js'
+        }
+      }
     };
   } else {
     return {
       base: env.BASE_URL,
       plugins: [vue(), dts()],
+      resolve: {
+        alias: {
+          'vue': 'vue/dist/vue.esm-bundler.js'
+        }
+      },
       build: {
         copyPublicDir: false,
         lib: {
-          entry: resolve(__dirname, 'src/index.ts'),
+          entry: {
+            index: resolve(__dirname, 'src/index.ts'),
+            plugin: resolve(__dirname, 'src/plugin.ts'),
+          },
           name: 'vue-page-craft',
-          fileName: (format) => `index.${format}.js`
+          fileName: (format) => `[name].${format}.js`
         },
         rollupOptions: {
           external: ['vue'],

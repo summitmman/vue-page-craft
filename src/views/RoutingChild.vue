@@ -77,7 +77,7 @@ const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVar
         type: Function,
         required: false,
         default: () => ({})
-      }
+      },
     });
     
     // utils
@@ -97,10 +97,29 @@ const <b>events</b>: EventMap&lt;reactiveVariablesType&gt; = (state: reactiveVar
     type reactiveVariablesType = typeof data & GenericObject<Ref>;
     // events is computed because we need to recalculate the function to add page level functions
     const events: ComputedRef<EventMap<reactiveVariablesType>> = computed(() => {
+      // console.log('SUMIT LOG', 'events calculated', Object.keys(props.eventsByRoute ?? {}));
       return (state: reactiveVariablesType, store: GenericObject<Ref>): GenericObject<Function> => ({
       
         // business logic page functions
         ...((props.eventsByRoute && props.eventsByRoute({getSchemaFor, jsonData, page, store, state, router})) ?? {}),
+        
+        // routeToPage2: async () => {
+        //     const response = await getSchemaFor('page2');
+        //     jsonData.value = JSON.parse(JSON.stringify(response));
+        //     page.value = response;
+        // },
+        // changeStateStore: () => {
+        //     if (store.userId) {
+        //         store.userId.value = 9898989898;
+        //     }
+        //     if (state.name) {
+        //         state.name.value = 'Vinita Koyilot';
+        //     }
+        //     console.log('store', store);
+        // },
+        // routeToPage3: () => {
+        //     router.push('/routing/page3');
+        // },
       
         // default functions
         routeBack: () => {

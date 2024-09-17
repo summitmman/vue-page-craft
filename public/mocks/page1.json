@@ -34,7 +34,7 @@
                 {
                     "type": "p",
                     "children": [
-                        "State value name is {{ name }}; but Store value userId is {{ store.userId }}",
+                        "State value name is {{ name }}; but Store value userId is {{ userId }}",
                         {
                             "type": "button",
                             "props": {

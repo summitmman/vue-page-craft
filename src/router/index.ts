@@ -30,10 +30,11 @@ const routes = [
             {
                 path: '/routing/page1',
                 // prop will be passed through beforeEnter
-                props: (route: any) => ({ eventsByRoute: route.meta.eventsByRoute }),
+                props: (route: any) => { console.log('SUMIT LOG', 'set props through route', Object.keys(route.meta.eventsByRoute)); return { eventsByRoute: route.meta.eventsByRoute }},
                 // before entering the route, fetch the business logic layer
                 beforeEnter: (to: any, _from: any, next: any) => {
                     import('../bl/page1Events').then(data => {
+                        console.log('SUMIT LOG', 'events fetched', Object.keys(data), Object.keys(data.events));
                         to.meta.eventsByRoute = data.events;
                         next();
                     });
