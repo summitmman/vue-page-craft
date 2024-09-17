@@ -17,7 +17,11 @@ const props = defineProps({
     store: {
         type: Object as () => GenericObject<Ref | ComputedRef>,
         default: () => {}
-    }
+    },
+    events: {
+        type: Object as () => GenericObject<Function>,
+        default: () => {}
+    },
 });
 
 const dynamicStrRef = ref<any>(null);
@@ -32,7 +36,8 @@ const renderStr = () => {
         setup() {
             return {
                 ...props.state,
-                ...props.store
+                ...props.store,
+                ...props.events
             };
         }
     });

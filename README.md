@@ -31,7 +31,7 @@ https://summitmman.github.io/vue-page-craft/
 - [X] Events support with access to reactive variables
 - [X] v-model support (only supported for custom vue components and not native html ones)
 - [X] Multiple v-model support
-- [X] Dynamic text support
+- [X] Dynamic text support including JS expressions
 - [X] Dynamic props support
 - [X] Named slots
 - [X] Initial set of reactive variables from JSON

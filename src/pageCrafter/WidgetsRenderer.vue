@@ -3,7 +3,7 @@
         v-for="(schemaItem, index) in props.schema"
         :key="(typeof schemaItem === 'string' ? schemaItem : schemaItem.id + schemaItem.type) + index"
     >
-        <DynamicString v-if="typeof schemaItem === 'string'" :str="schemaItem" :state="props.state" :store="props.store" />
+        <DynamicString v-if="typeof schemaItem === 'string'" :str="schemaItem" :events="props.events" :state="props.state" :store="props.store" />
         <WidgetRenderer v-else :schema="schemaItem" :widgets="localWidgetMap" :events="props.events" :state="props.state" :store="props.store" />
     </template>
 </template>
