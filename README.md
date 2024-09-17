@@ -264,7 +264,7 @@ const events: EventMap = (state: GenericObject<Ref | ComputedRef>, store: Generi
                     "slotProps "
                 ]
             },
-            "'{{ footerSlotProps.message }}'" // access to slotProps nomenclature "<slot name>SlotProps"
+            "'{{ footerSlotProps.message }}'" // access to slotProps nomenclature "<slot name containing only a-z A-Z 0-9 _ and $>SlotProps"
         ]
     }
 },
