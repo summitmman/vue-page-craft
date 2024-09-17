@@ -1,4 +1,11 @@
-export const events = ({ getSchemaFor, jsonData, page, store, state, router }: any) => {
+export const events = ({
+    getSchemaFor,
+    jsonData,
+    // page,
+    store,
+    state,
+    router
+}: any) => {
     return {
         routeToPage2: async () => {
             // Although this piece of code is valid, it bypasses router and hence does not download the business logic script before loading the page

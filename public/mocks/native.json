@@ -264,7 +264,7 @@
                                 ]
                             },
                             "children": [
-                                "This text only shows when Single Name/Pet Name length : \"{{ singleNameLength }}\" is a valid"
+                                "This text only shows when Single Name/Pet Name length : \"{{ singleName.length }}\" is a valid"
                             ]
                         }
                     ]
