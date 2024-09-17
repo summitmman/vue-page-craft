@@ -1,0 +1,1 @@
+const s=({getSchemaFor:n,jsonData:o,store:e,state:a,router:t})=>({routeToPage2:async()=>{const r=await n("page2");o.value=JSON.parse(JSON.stringify(r)),t.push("/routing/page2")},changeStateStore:()=>{e.userId&&(e.userId.value=9898989898),a.name&&(a.name.value="Vinita Koyilot"),console.log("store",e)}});export{s as events};
