@@ -4,9 +4,9 @@
         <input class="native-input mb-10" type="text" v-model="name" @input="handleChange" />
         <label>Last Name</label>
         <input class="native-input" type="text" v-model="surname" />
-        <div>You have entered "{{ name }} {{ surname }}" using v-model and v-model:surname</div>
-        <div>Single Name or Pet Name "{{ props.singleName }}" comes from outside</div>
-        <slot name="footer" message="message from slotProps"></slot>
+        <div v-if="$slots.footer" class="comp-footer">
+            <slot name="footer" :fullName="`${name} ${surname}`"></slot>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -26,5 +26,10 @@
 <style scoped>
 label, input {
     display: block;
+}
+.comp-footer {
+    margin-top: 10px;
+    border-top: 1px dashed #aaa;
+    padding-top: 10px;
 }
 </style>

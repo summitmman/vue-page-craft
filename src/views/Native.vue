@@ -8,12 +8,12 @@
           :events="events"
           :data="data"
         />
-        <div class="boundary">
+        <!-- <div class="boundary">
           <h2>This section is outside page crafter</h2>
           <p>We will try to enter/change the Single Name/Pet Name</p>
           <input type="text" class="native-input block" v-model="singleName" />
           Your Single Name/Pet Name is "{{ singleName }}"
-        </div>
+        </div> -->
       </div>
     </template>
     <template v-slot:schema>
@@ -107,6 +107,10 @@ const <b>widgets</b> = {
   const events: EventMap<reactiveVariablesType> = (state: reactiveVariablesType, store: GenericObject<Ref>, extra: GenericObject): GenericObject<Function> => ({
     handleAppCustomClick: () => {
       alert(`Hello ${ state.name?.value }`);
+    },
+    handleNameChange: (event: any) => {
+      if (state.name)
+        (state.name as Ref<string>).value = event.target.value;
     },
     handleChange: (val: string) => {
       console.log('SUMIT LOG', val, state.surname?.value, store, extra);

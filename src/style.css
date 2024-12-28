@@ -9,6 +9,12 @@ body {
 pre {
   max-width: 50vw;
 }
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  margin-top: 30px;
+}
 .native-btn {
   background-color: aliceblue;
   border-style: solid;
@@ -18,6 +24,7 @@ pre {
 .native-input {
   border-style: solid;
   padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .mt-2 {
@@ -40,6 +47,9 @@ pre {
 }
 .ml-15 {
   margin-left: 15px !important;
+}
+.mr-5 {
+  margin-right: 5px !important;
 }
 .block {
   display: block;
@@ -112,9 +122,9 @@ pre {
 }
 
 .boundary {
-  padding: 10px 0px;
-  border-top: 1px dashed #aaa;
-  border-bottom: 1px dashed #aaa;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  border-radius: 4px;
 }
 .json-section {
   width: 100%;
@@ -160,4 +170,11 @@ color: inherit;
 }
 .component-map-txt {
   background-color: rgb(255, 112, 171);
+}
+
+.note-block {
+  font-size: 0.8rem;
+  padding: 0.8rem;
+  border-radius: 4px;
+  background-color: rgba(154, 151, 43, 0.2);
 }
