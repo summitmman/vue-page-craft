@@ -31,65 +31,338 @@
     },
     "schema": [
         {
-            "type": "div",
+            "type": "h1",
+            "children": [
+                "Page Crafter Demo"
+            ]
+        },
+        {
+            "type": "p",
+            "props": {
+                "class": "mb-10"
+            },
+            "children": [
+                "This page is made using JSON schema and Page crafter. You can create entire pages with mid-level reactivity at run-time. Below are some supported features."
+            ]
+        },
+        {
+            "type": "p",
+            "props": {
+                "class": "mb-10 note-block"
+            },
             "children": [
                 {
-                    "type": "h1",
+                    "type": "b",
                     "children": [
-                        "Native Demo"
+                        "Note:"
                     ]
                 },
+                " On the right, you see the schema which created this page along with the initial state. These can be provided in JSON format. Event and component map are to be provided in the code before hand."
+            ]
+        },
+        {
+            "type": "div",
+            "props": {
+                "class": "mb-10"
+            },
+            "children": [
                 {
-                    "type": "p",
-                    "props": {
-                        "class": "mb-10"
-                    },
+                    "type": "h2",
                     "children": [
-                        "This page demonstrates the use of Page crafter. Page crafter can be used not only to create forms dynamically but also entire pages with mid-level complexity."
+                        "Bind state and events"
                     ]
                 },
                 {
                     "type": "div",
                     "props": {
-                        "class": "banner mb-10"
+                        "class": "mb-10"
                     },
                     "children": [
                         {
-                            "type": "img",
+                            "type": "label",
                             "props": {
-                                "src": "/vue-page-craft/img/path.jpg",
-                                "class": "banner-img"
+                                "class": "block"
+                            },
+                            "children": [
+                                "Change the name below"
+                            ]
+                        },
+                        {
+                            "type": "input",
+                            "props": {
+                                "type": "text",
+                                "class": "native-input",
+                                "value": "{{ name }}"
+                            },
+                            "events": {
+                                "input": "{{ handleNameChange }}"
                             }
                         },
                         {
-                            "type": "h1",
-                            "props": {
-                                "class": "banner-text-container"
-                            },
+                            "type": "div",
                             "children": [
-                                {
-                                    "type": "div",
-                                    "props": {
-                                        "class": "frosted-glass"
-                                    }
-                                },
-                                {
-                                    "type": "div",
-                                    "props": {
-                                        "class": "banner-text"
-                                    },
-                                    "children": [
-                                        "PAGE CRAFTER DEMO - Native"
-                                    ]
-                                }
+                                "You have entered: {{ name }}"
                             ]
                         }
                     ]
                 },
                 {
+                    "type": "div",
+                    "props": {
+                        "class": "note-block"
+                    },
+                    "children": [
+                        {
+                            "type": "p",
+                            "props": {
+                                "class": "mb-10"
+                            },
+                            "children": [
+                                "Here we are creating a simple input element, binding the state ",
+                                {
+                                    "type": "b",
+                                    "children": [
+                                        "'name'"
+                                    ]
+                                },
+                                " and the event ",
+                                {
+                                    "type": "b",
+                                    "children": [
+                                        "'handleNameChange'"
+                                    ]
+                                },
+                                " to the input event. You can see both of these in the state and event map."
+                            ]
+                        },
+                        {
+                            "type": "p",
+                            "children": [
+                                "The label under the input uses ",
+                                {
+                                    "type": "b",
+                                    "children": [
+                                        "string interpolation"
+                                    ]
+                                },
+                                " to show the reactive state as it changes."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "div",
+            "props": {
+                "class": "mb-10"
+            },
+            "children": [
+                {
                     "type": "h2",
                     "children": [
-                        "Benefits"
+                        "Use Expressions in string interpolation"
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "mb-10"
+                    },
+                    "children": [
+                        "The name you entered in the previous section has \"{{ name.length }}\" characters, \"{{ name[Math.floor(name.length/2)] }}\" being the character almost in the middle at index \"{{ Math.floor(name.length/2) }}\""
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "note-block"
+                    },
+                    "children": [
+                        "You can use expressions in string interpolation. In the above example we are using expressions like ", {"type": "b", "children": "name[Math.floor(name.length/2)]"}, ", which has math operation \"division\", function \"Math.floor\" and we are also accessing the \"length\" property of state \"name\". You will see these being reactive and change as you change the text in the input above."
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "div",
+            "props": {
+                "class": "mb-10"
+            },
+            "children": [
+                {
+                    "type": "h2",
+                    "children": [
+                        "Use native html elements or custom vue components"
+                    ]
+                },
+                {
+                    "type": "div",
+                    "children": [
+                        {
+                            "type": "button",
+                            "props": {
+                                "class": "native-btn mr-5"
+                            },
+                            "events": {
+                                "click": "{{ handleAppCustomClick }}"
+                            },
+                            "children": ["Native button"]
+                        },
+                        {
+                            "type": "Button",
+                            "events": {
+                                "click": "{{ handleAppCustomClick }}"
+                            },
+                            "children": ["Custom button component"]
+                        },
+                        {
+                            "type": "div",
+                            "props": {
+                                "class": "note-block mt-10"
+                            },
+                            "children": [
+                                "You can render native html elements or custom vue components. You will see custom vue components in the component map, or it should be globally available.",
+                                {
+                                    "type": "p",
+                                    "props": {
+                                        "class": "mt-10"
+                                    },
+                                    "children": [
+                                        {
+                                            "type": "b",
+                                            "children": ["Note:"]
+                                        },
+                                        " You may also add components from any component library in the same way"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "div",
+            "props": {
+                "class": "mb-10"
+            },
+            "children": [
+                {
+                    "type": "h2",
+                    "children": [
+                        "Use v-model and named slots"
+                    ]
+                },
+                {
+                    "type": "div",
+                    "children": [
+                        {
+                            "type": "Name",
+                            "props": {
+                                "type": "text",
+                                "v-model": "{{ name }}",
+                                "v-model:surname": "{{ surname }}",
+                                "singleName": "{{ singleName }}"
+                            },
+                            "events": {
+                                "change": "handleChange"
+                            },
+                            "slots": {
+                                "footer": [
+                                    "Your full name is '{{ footerSlotProps.fullName }}'"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "note-block mt-10"
+                    },
+                    "children": [
+                        {
+                            "type": "p",
+                            "props": {
+                                "class": "mb-10"
+                            },
+                            "children": [
+                                "The complete bordered section above is a custom component to which we can ", {"type": "b", "children": ["v-model"]}, " and named ", {"type": "b", "children": ["v-model:surname"]}, ". So multiple v-models are supported."
+                            ]
+                        },
+                        {
+                            "type": "p",
+                            "children": [
+                                "We are also providing ", {"type": "b", "children": ["named slot"]}, " \"footer\" in the above component and that slot receives reactive ", {"type": "b", "children": ["slotProps"]}, " (fullName) here in the format \"slotName + 'SlotProps'\" (eg: footerSlotProps.fullName)."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "div",
+            "children": [
+                {
+                    "type": "h2",
+                    "children": [
+                        "Use v-if"
+                    ]
+                },
+                {
+                    "type": "v-if",
+                    "props": {
+                        "condition": "{{ name }}",
+                        "vElseChildren": [
+                            {
+                                "type": "v-if",
+                                "props": {
+                                    "condition": "{{ surname }}",
+                                    "vElseChildren": [
+                                        "You have not entered any name"
+                                    ]
+                                },
+                                "children": [
+                                    "First name does not exist but surname does '{{ surname }}'"
+                                ]
+                            }
+                        ]
+                    },
+                    "children": [
+                        "First name exists '{{ name }}'"
+                    ]
+                },
+                {
+                    "type": "div",
+                    "props": {
+                        "class": "note-block mt-10"
+                    },
+                    "children": [
+                        {
+                            "type": "p",
+                            "props": { "class": "mb-10" },
+                            "children": [
+                                "Here we first check if first 'name' exists, if it does not then we check if 'surname' exists and if both don't, then we print that no name exists"
+                            ]
+                        },
+                        {
+                            "type": "p",
+                            "children": [
+                                "So, in the above section, first delete first name, then the surname and observe how statements change above"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "div",
+            "children": [
+                {
+                    "type": "h2",
+                    "children": [
+                        "Use v-for"
                     ]
                 },
                 {
@@ -132,7 +405,7 @@
                                                         {
                                                             "type": "h4",
                                                             "children": [
-                                                                "{{ myBenefitsItem.title }}"
+                                                                "{{ name }} Would {{ myBenefitsItem.title }}"
                                                             ]
                                                         },
                                                         {
@@ -152,148 +425,28 @@
                     ]
                 },
                 {
-                    "type": "h2",
-                    "children": [
-                        "Enter your name"
-                    ]
-                },
-                {
-                    "type": "p",
-                    "props": {
-                        "class": "mb-10"
-                    },
-                    "children": [
-                        "just a simple form demo"
-                    ]
-                },
-                {
-                    "type": "p",
-                    "children": [
-                        {
-                            "type": "Name",
-                            "props": {
-                                "type": "text",
-                                "v-model": "{{ name }}",
-                                "v-model:surname": "{{ surname }}",
-                                "singleName": "{{ singleName }}"
-                            },
-                            "events": {
-                                "change": "handleChange"
-                            },
-                            "slots": {
-                                "footer": [
-                                    "This footer is a ",
-                                    {
-                                        "type": "b",
-                                        "children": [
-                                            "named slot example "
-                                        ]
-                                    },
-                                    "showing last name '{{ surname }}' and ",
-                                    {
-                                        "type": "b",
-                                        "children": [
-                                            "slotProps "
-                                        ]
-                                    },
-                                    "'{{ footerSlotProps.message }}'"
-                                ]
-                            }
-                        },
-                        "From outside the custom textbox component we get the name \"{{ name }}\" surname \"{{ surname }}\"",
-                        "This data is from the store \"{{ userId }}\"",
-                        {
-                            "type": "br"
-                        },
-                        "Pet name \"{{ singleName }}\" is just printed here",
-                        {
-                            "type": "Button",
-                            "props": {
-                                "class": "block mb-10"
-                            },
-                            "events": {
-                                "click": "handleAppCustomClick"
-                            },
-                            "children": [
-                                "Custom button to say Hi"
-                            ]
-                        },
-                        {
-                            "type": "button",
-                            "props": {
-                                "class": "block native-btn mb-10"
-                            },
-                            "events": {
-                                "click": "handleAppCustomClick"
-                            },
-                            "children": [
-                                "Native button to say Hi"
-                            ]
-                        }
-                    ]
-                },
-                {
                     "type": "div",
                     "props": {
-                        "class": "boundary"
+                        "class": "note-block mt-10 mb-10"
                     },
                     "children": [
                         {
-                            "type": "h2",
+                            "type": "p",
+                            "props": {
+                                "class": "mb-10"
+                            },
                             "children": [
-                                "v-if example"
+                                "The above structure has been made with v-for. You can access the item in each loop in the format \"id+'item'\" (eg: myBenefitsItem)."
                             ]
                         },
                         {
-                            "type": "v-if",
-                            "props": {
-                                "condition": "{{ singleNameLength }}",
-                                "vElseChildren": [
-                                    {
-                                        "type": "v-if",
-                                        "props": {
-                                            "condition": "{{ name }}",
-                                            "vElseChildren": [
-                                                "This text shows when both Single Name/Pet Name and First Name are invalid"
-                                            ]
-                                        },
-                                        "children": [
-                                            "This text only shows when Single Name/Pet Name is invalid but First Name : \"{{ name }}\" is valid"
-                                        ]
-                                    }
-                                ]
-                            },
-                            "children": [
-                                "This text only shows when Single Name/Pet Name length : \"{{ singleName.length }}\" is a valid"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "div",
-                    "props": {
-                        "class": "boundary"
-                    },
-                    "children": [
-                        {
-                            "type": "h2",
-                            "children": [
-                                "v-for example"
-                            ]
-                        },
-                        {
-                            "type": "v-for",
-                            "props": {
-                                "id": "looping",
-                                "loopOn": "{{ cities }}"
-                            },
+                            "type": "p",
                             "children": [
                                 {
-                                    "type": "div",
-                                    "children": [
-                                        "{{ name }} has lived in {{loopingIndex}}:{{ loopingItem.name }}"
-                                    ]
-                                }
+                                    "type": "b",
+                                    "children": ["Note:"]
+                                },
+                                " I added 'name' to the items just to show reactivity"
                             ]
                         }
                     ]
