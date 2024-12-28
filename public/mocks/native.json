@@ -170,7 +170,37 @@
                         "class": "mb-10"
                     },
                     "children": [
-                        "The name you entered in the previous section has \"{{ name.length }}\" characters, \"{{ name[Math.floor(name.length/2)] }}\" being the character almost in the middle at index \"{{ Math.floor(name.length/2) }}\""
+                        "The name you entered in the previous section has:",
+                        {
+                            "type": "div",
+                            "children": [
+                                "characters: ",
+                                {
+                                    "type": "b",
+                                    "children": ["{{ name.length }}"]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "div",
+                            "children": [
+                                "middle index: ",
+                                {
+                                    "type": "b",
+                                    "children": ["{{ Math.floor(name.length/2) }}"]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "div",
+                            "children": [
+                                "middle character: ",
+                                {
+                                    "type": "b",
+                                    "children": ["\"{{ name[Math.floor(name.length/2)] }}\""]
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
